@@ -43,7 +43,7 @@ npm i nodemon --save-dev
 import express from "express";
 
 const app  = express();
-const handleListening = () => console.log("Server Listening on port 9030");
+const handleListening = () => console.log("Server Listening on port 8080");
 
 app.listen(8080, handleListening);
 ```
@@ -66,5 +66,50 @@ const handleHome = (req, res) => {
     return res.send("I wanna go Home.......🏚");
 }
 
+app.get("/", handleHome);
+```
+
+### middleware 
+- middleware란 MVC 패턴 중 controller를 의미할 수 있음
+```javascript
+const handleHome = (req, res, next) => {
+    next();
+}
+```
+```javascript
+const logger = (req, res, next) => {
+    console.log("I'm in the middle!");
+    next();
+}
+app.get("/", logger, handleHome);
+```
+- middleware는 request에 응답하는게 아니라 request를 지속시키는 역할을 함. 즉 응답하는 method가 아니라, 작업을 다음 method에 넘기는 역할을 함.
+- 아래는 handleHome을 호출시키지 않고 gossipMiddleware를 호출하고 끝남.
+```javascript
+const logger = (req, res, next) => {
+    return res.send("I have the power now!");
+    next();
+}
+
+const handleHome = (req, res) => {
+    return res.send("Here is middlewares.........");
+}
+
+app.get("/", logger, handleHome);
+```
+- middleware는 웹사이트의 어디를 가려는지 알려줌
+- 아래는 request object를 통해 request.url을 콘솔에 출력함.
+```javascript
+const logger = (req, res, next) => {
+    console.log(`Someone is going to : ${req.url}`);
+    next();
+}
+app.get("/", logger, handleHome);
+```
+
+### app.use()
+- global middleware를 만들 수 있게 함. use()다음 get()이 와야 한다.
+```javascript
+app.use(logger);
 app.get("/", handleHome);
 ```
