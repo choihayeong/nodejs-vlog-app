@@ -5,8 +5,8 @@ const PORT = 8080;
 const app  = express();
 
 /* middlewares */
-const logger = (req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
+const methodLogger = (req, res, next) => {
+    console.log(`METHOD: ${req.method}`);
     next();
 }
 const privateMiddleware = (req, res, next) => {
@@ -17,9 +17,17 @@ const privateMiddleware = (req, res, next) => {
     console.log("Allowed. You may continue");
     next();
 }
+const routerLogger = (req, res, next) => {
+    console.log(`PATH: ${req.path}`);
+
+    // return res.send("www");
+    next();
+}
 
 /* handler */
 const handleHome = (req, res) => {
+    console.log("I will respond.");
+
     return res.send("Here is middlewares.........");
 }
 const handleLogin = (req, res) => {
@@ -29,9 +37,10 @@ const handleProtected = (req, res) => {
     return res.send("Welcome :)");
 }
 
-app.use(logger);
-app.use(privateMiddleware);
+app.use(methodLogger, routerLogger);
+// app.use(privateMiddleware);
 app.get("/", handleHome);
+// app.get("/", methodLogger, routerLogger, handleHome);
 app.get("/login", handleLogin);
 app.get("/protected", handleProtected);
 

@@ -84,7 +84,7 @@ const logger = (req, res, next) => {
 app.get("/", logger, handleHome);
 ```
 - middleware는 request에 응답하는게 아니라 request를 지속시키는 역할을 함. 즉 응답하는 method가 아니라, 작업을 다음 method에 넘기는 역할을 함.
-- 아래는 handleHome을 호출시키지 않고 gossipMiddleware를 호출하고 끝남.
+- 아래는 handleHome을 호출시키지 않고 logger를 호출하고 끝남.
 ```javascript
 const logger = (req, res, next) => {
     return res.send("I have the power now!");
@@ -106,10 +106,33 @@ const logger = (req, res, next) => {
 }
 app.get("/", logger, handleHome);
 ```
+- middleware는 여러 개 쓸 수 있다. 
+- 다음은 methodLogger를 실행 후 ```next();``` 다음 routerLogger가 실행 및 return 되면서 handleHome은 사용하지 않게 된다.
+```javascript
+const methodLogger = (req, res, next) => {
+    next();
+}
+const routerLogger = () => {
+    return res.send("www");
+}
+
+app.get("/", methodLogger, routerLogger, handleHome);
+```
 
 ### app.use()
 - global middleware를 만들 수 있게 함. use()다음 get()이 와야 한다.
 ```javascript
 app.use(logger);
 app.get("/", handleHome);
+```
+- before refactoring : 다음의 코드를 ```app.use()```로 간결하게 바꿀 수 있음.
+```javascript
+app.get("/", methodLogger, routerLogger, handleHome);
+app.get("/login", methodLogger, routerLogger, handleHome);
+```
+- after refactoring : 순서 중요*
+```javascript
+app.use(methodLogger, routerLogger);
+app.get("/", handleHome);
+app.get("/login", handleLogin);
 ```
