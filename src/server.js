@@ -1,28 +1,12 @@
 import express from "express";
+import morgan from "morgan";
 
 const PORT = 8080;
 
 const app  = express();
+const loggerMiddleware = morgan("combined");
 
 /* middlewares */
-const methodLogger = (req, res, next) => {
-    console.log(`METHOD: ${req.method}`);
-    next();
-}
-const privateMiddleware = (req, res, next) => {
-    const url = req.url;
-    if (url === "/protected") {
-        return res.send("<h1>Not Allowed</h1>")
-    }
-    console.log("Allowed. You may continue");
-    next();
-}
-const routerLogger = (req, res, next) => {
-    console.log(`PATH: ${req.path}`);
-
-    // return res.send("www");
-    next();
-}
 
 /* handler */
 const handleHome = (req, res) => {
@@ -37,8 +21,7 @@ const handleProtected = (req, res) => {
     return res.send("Welcome :)");
 }
 
-app.use(methodLogger, routerLogger);
-// app.use(privateMiddleware);
+app.use(loggerMiddleware);
 app.get("/", handleHome);
 // app.get("/", methodLogger, routerLogger, handleHome);
 app.get("/login", handleLogin);
