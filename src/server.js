@@ -4,28 +4,30 @@ import morgan from "morgan";
 const PORT = 8080;
 
 const app = express();
-const loggerMiddleware = morgan("combined");
+const logger = morgan("dev");
+app.use(logger);
 
-/* middlewares */
+const globalRouter = express.Router();
 
-/* handler */
-const handleHome = (req, res) => {
-  console.log("I will respond.");
+const handleHome = (req, res) => res.send("Home");
 
-  return res.send("Here is middlewares.........");
-};
-const handleLogin = (req, res) => {
-  return res.send({ message: "in the bottle.........." });
-};
-const handleProtected = (req, res) => {
-  return res.send("Welcome :)");
-};
+globalRouter.get("/", handleHome);
 
-app.use(loggerMiddleware);
-app.get("/", handleHome);
-// app.get("/", methodLogger, routerLogger, handleHome);
-app.get("/login", handleLogin);
-app.get("/protected", handleProtected);
+const userRouter = express.Router();
+
+const handleEditUser = (req, res) => res.send("Edit User");
+
+userRouter.get("/edit", handleEditUser);
+
+const videoRouter = express.Router();
+
+const handleWatchVideo = (req, res) => res.send("Watch Video");
+
+videoRouter.get("/watch", handleWatchVideo);
+
+app.use("/", globalRouter);
+app.use("/users", userRouter);
+app.use("/videos", videoRouter);
 
 const handleListening = () =>
   console.log(`✅ Server Listening on port http://localhost:${PORT} 😎`);
