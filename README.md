@@ -28,3 +28,28 @@ nodejs-vlog-app built using node.js, express, mariadb and ES6
   }
 }
 ```
+
+### Design for domain url
+
+```
+/ -> home
+/join -> 회원가입
+/login -> 로그인
+/search -> 검색
+
+/users/join
+/users/login
+/users/logout
+/users/:id -> See User
+/users/edit -> Edit My Profile
+/users/delete -> Delete My Profile
+
+/videos/search
+/videos/:id -> See video
+/videos/:id/edit -> Edit Video
+/videos/:id/delete -> Delete Video
+/videos/upload -> Upload Video
+
+/videos/comments
+/videos/comments/delete
+```
