@@ -13,6 +13,19 @@ head
   link(rel="stylesheet", href="https://unpkg.com/mvp.css")
 ```
 
+- 변수를 다음과 같이도 할당할 수 있음 (`h1=pageTitle`)
+
+```pug
+//- base.pug
+body
+  header
+    h1=pageTitle
+```
+
+## Conditional
+
+- [pug : conditional](https://pugjs.org/language/conditionals.html)
+
 ### 참고링크 🔗
 
 - [MVP.css](https://andybrewer.github.io/mvp/)
