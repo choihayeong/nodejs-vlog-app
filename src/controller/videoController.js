@@ -1,10 +1,35 @@
-const fakeUser = {
-  userName: "Gildong Hong",
-  loggedIn: false,
+export const trending = (req, res) => {
+  // const videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const videos = [
+    {
+      title: "Welcome :)",
+      rating: 4,
+      comments: 2,
+      createdAt: "2 Minutes Ago",
+      views: "1000",
+      idx: 1,
+    },
+    {
+      title: "#2 Video",
+      rating: 4,
+      comments: 2,
+      createdAt: "2 Minutes Ago",
+      views: "1000",
+      idx: 2,
+    },
+    {
+      title: "Whatups",
+      rating: 4,
+      comments: 2,
+      createdAt: "2 Minutes Ago",
+      views: "1000",
+      idx: 3,
+    },
+  ];
+
+  return res.render("home", { pageTitle: "Home", videos });
 };
 
-export const trending = (req, res) =>
-  res.render("home", { pageTitle: "Home", fakeUser });
 export const uploadVideo = (req, res) => res.send("Upload Video");
 export const getVideo = (req, res) => {
   const { id } = req.params;
