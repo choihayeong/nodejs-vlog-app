@@ -1,5 +1,5 @@
 // dummy data : videos
-const videos = [
+let videos = [
   {
     title: "Welcome :)",
     rating: 4,
@@ -42,7 +42,15 @@ export const getEditVideo = (req, res) => {
 
   return res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
 };
-export const postEditVideo = (req, res) => {};
+export const postEditVideo = (req, res) => {
+  const { id } = req.params;
+
+  const { title } = req.body;
+
+  videos[id - 1].title = title;
+
+  return res.redirect(`/videos/${id}`);
+};
 export const deleteVideo = (req, res) => res.send("Delete Video");
 export const searchVideo = (req, res) => res.send("Search Video");
 

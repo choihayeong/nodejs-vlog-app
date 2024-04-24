@@ -78,12 +78,53 @@ block content
 
 ```javascript
 // videoRouter.js
+videoRouter.get("/:id(\\d+)/edit", getEditVideo);
 videoRouter.post("/:id(\\d+)/edit", postEditVideo);
+```
+
+- 위에 있는 내용을 다음과 같이 작성할 수 있다
+
+```javascript
+// videoRouter.js
+videoRouter.route("/:id(\\d+)/edit").get(getEditVideo).post(postEditVideo);
 ```
 
 - `videoController.js`에 `postEditVideo` 함수 추가
 
 ```javascript
 // videoController.js
-export const postEditVideo = (req, res) => {};
+export const postEditVideo = (req, res) => {
+  const { id } = req.params;
+
+  return res.redirect(`/videos/${id}`);
+  // return res.end();
+};
 ```
+
+### `express.urlencoded()` Method
+
+- edit 페이지에서 form에 보내진 데이터를 읽어들이는 console을 `postEditVideo`에 찍으면 `undefined`가 나옴. 이를 해결하기 위해서 express 내장함수 중 `urlencoded()` 라는 메서드를 이용함.
+
+```javascript
+// videoController.js
+export const postEditVideo = (req, res) => {
+  const { id } = req.params;
+
+  console.log(req.body); // undefined
+
+  return res.redirect(`/videos/${id}`);
+};
+```
+
+```javascript
+// server.js
+
+app.use(express.urlencoded({ extended: true })); // 추가
+app.use("/", globalRouter);
+
+// ...
+
+app.listen(PORT, handleListening);
+```
+
+- edit 페이지를 post 하면 console에 찍히는 결과가 input의 속성 중 name과 value가 json 형식으로 나옴 `{ name : value }`

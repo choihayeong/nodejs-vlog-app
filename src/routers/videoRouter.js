@@ -10,8 +10,9 @@ import {
 const videoRouter = express.Router();
 
 videoRouter.get("/:id(\\d+)", getVideo);
-videoRouter.get("/:id(\\d+)/edit", getEditVideo);
-videoRouter.post("/:id(\\d+)/edit", postEditVideo);
+
+videoRouter.route("/:id(\\d+)/edit").get(getEditVideo).post(postEditVideo);
+
 videoRouter.get("/:id(\\d+)/delete", deleteVideo);
 
 export default videoRouter;
