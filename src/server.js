@@ -7,8 +7,6 @@ import userRouter from "./routers/userRouter";
 
 const PORT = 8080;
 
-console.log(process.cwd());
-
 const app = express();
 const logger = morgan("dev");
 
