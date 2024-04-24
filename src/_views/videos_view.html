@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <%- include('include/inc_head.html'); %>
+  <body>
+    <div class="wrap">
+      <%- include('include/inc_header.html'); %>
+
+      <h3><%= video.views %> <%= video.views === 1 ? "view" : "views" %></h3>
+
+      <a href="<%=`${video.idx}/edit`%>">Edit Video &rarr;</a>
+
+      <%- include('include/inc_footer.html'); %>
+    </div>
+  </body>
+</html>

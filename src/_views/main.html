@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <%- include('include/inc_head.html'); %>
+  <body>
+    <div class="wrap">
+      <%- include('include/inc_header.html'); %>
+
+      <h2>Welcome :) You can see trending videos 🎬</h2>
+
+      <% videos.forEach(video => { %> <%- include("partials/partial_video.html",
+      {info: video}) %> <% }) %> <%- include('include/inc_footer.html'); %>
+    </div>
+  </body>
+</html>
