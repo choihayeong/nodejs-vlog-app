@@ -1,6 +1,6 @@
 # mongo DB
 
-> > document-based : 일반적으로 DB는 sql-based임. MongoDB는 Json 같은 문서형식으로 구성된 DB임.
+> document-based : 일반적으로 DB는 sql-based임. MongoDB는 Json 같은 문서형식으로 구성된 DB임.
 
 ## Installation
 
@@ -12,7 +12,7 @@
 
 ## Connecting to MongoDB
 
-> > WindowOS 기준
+> WindowOS 기준
 
 ### `mongod` 명령어
 
@@ -61,6 +61,22 @@ import morgan from "morgan";
 import "./db"; // 해당 부분 추가
 
 // ...
+```
+
+- `src/db.js`에 다음과 같이 콘솔 확인
+
+```javascript
+import mongoose from "mongoose";
+
+mongoose.connect("mongodb://127.0.0.1:27017/vlog-app");
+
+const db = mongoose.connection;
+
+const handleOpen = () => console.log("✅ Connected to DB");
+const handleError = (err) => console.log("❌ DB Error", err);
+
+db.on("error", handleError);
+db.once("open", handleOpen);
 ```
 
 #### 참고링크
