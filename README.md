@@ -12,6 +12,7 @@ nodejs-vlog-app built using node.js, express, mariadb and ES6
 {
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^8.3.4",
     "morgan": "^1.10.0",
     "prettier": "^3.2.5",
     "pug": "^3.0.2"
