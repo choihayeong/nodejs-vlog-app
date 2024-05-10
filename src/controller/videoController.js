@@ -5,10 +5,18 @@ const handleSearch = (err, data) => {
   console.log("data", data);
 };
 
-export const home = (req, res) => {
-  videoModel.find({}).then(handleSearch);
+export const home = async (req, res) => {
+  // videoModel.find({}).then(handleSearch);
 
-  return res.render("home", { pageTitle: "Home", videos: [] });
+  try {
+    console.log("top");
+    const videos = await videoModel.find({});
+    console.log(videos);
+    console.log("finished");
+    return res.render("home", { pageTitle: "Home", videos: [] });
+  } catch {
+    return res.send("server error");
+  }
 };
 
 export const getVideo = (req, res) => {

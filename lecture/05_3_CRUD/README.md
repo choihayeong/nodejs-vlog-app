@@ -109,3 +109,55 @@ export const home = (req, res) => {
 ```
 MongooseError: Model.find() no longer accepts a callback
 ```
+
+### Async/Await
+
+```javascript
+export const home = async (req, res) => {
+  // videoModel.find({}).then(handleSearch);
+
+  console.log("top");
+
+  const videos = await videoModel.find({});
+
+  console.log("middle");
+
+  console.log(videos);
+
+  return res.render("home", { pageTitle: "Home", videos: [] });
+};
+```
+
+- 기존의 비동기 방식을 다음과 같은 async/await 형식으로 작성 하면 콘솔에는 다음과 같은 순서로 나옴
+
+```
+top
+middle
+[] <- videos
+```
+
+- `try/catch`로 오류 캐치
+
+```javascript
+export const home = async (req, res) => {
+  // videoModel.find({}).then(handleSearch);
+
+  try {
+    console.log("top");
+    const videos = await videoModel.find({});
+    console.log(videos);
+    console.log("finished");
+    return res.render("home", { pageTitle: "Home", videos: [] });
+  } catch {
+    return res.send("server error");
+  }
+};
+```
+
+- 터미널 콘솔은 다음과 같다.
+
+```
+top
+[] <- videos
+finished
+```
