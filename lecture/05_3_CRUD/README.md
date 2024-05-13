@@ -231,11 +231,19 @@ export const postUploadVideo = async (req, res) => {
 
 - 윈도우 커맨드 창에서 mongosh를 실행 후 `show dbs`를 실행하면 `vlog-app` db가 생성된 것을 볼 수 있다.
 
+  ![image](https://github.com/choihayeong/nodejs-vlog-app/assets/90609686/bb49b863-1653-462b-933b-77f01ec1d9f7)
+
 - `use vlog-app`을 커맨드 창에 실행하면 `switched to db vlog-app`이라는 결과가 뜬다.
+
+  ![image](https://github.com/choihayeong/nodejs-vlog-app/assets/90609686/1d21fc0a-0517-4af6-8b0e-d2d9ab601ec3)
 
 - `show collections`를 실행하면 `videos` 라는 db의 document중 하나가 있다는 것을 볼 수 있다.
 
+  ![image](https://github.com/choihayeong/nodejs-vlog-app/assets/90609686/0be0aa5b-488d-4368-8f2b-cb9a4a80097a)
+
 - `db.videos.find()`를 실행하면 `videos` 라는 db의 document의 데이터를 확인할 수 있다. (sql의 SELECT 문과 비슷한 듯?)
+
+  ![image](https://github.com/choihayeong/nodejs-vlog-app/assets/90609686/5129b087-a954-4fa1-8cda-35bd350326b7)
 
 ### dbModel.Create({});
 
