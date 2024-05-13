@@ -245,7 +245,7 @@ export const postUploadVideo = async (req, res) => {
 
   ![image](https://github.com/choihayeong/nodejs-vlog-app/assets/90609686/5129b087-a954-4fa1-8cda-35bd350326b7)
 
-### dbModel.Create({});
+### `dbModel.Create({});`
 
 - 데이터를 생성 (2) : `Create({})` 를 이용하여 다음과 같이 생성도 가능함.
 
@@ -266,4 +266,48 @@ export const postUploadVideo = async (req, res) => {
 
   return res.redirect("/");
 };
+```
+
+### `try/catch`
+
+- validation 오류 등이 있을 경우 다음과 같이 `try/catch` 문으로 작성해준다.
+
+```javascript
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  try {
+    await videoModel.create({
+      vlog_title,
+      vlog_desc,
+      hashtags: hashtags.split(",").map((item) => `#${item}`),
+    });
+
+    return res.redirect("/");
+  } catch (err) {
+    return res.render("upload", {
+      pageTitle: "Upload your video",
+      errMessage: err._message,
+    });
+  }
+};
+```
+
+- `Video.js`의 스키마를 구체적으로 정의해준다.
+
+  - `required` 값을 정의해서 해당 값이 없을 경우 에러 메시지를 출력하게 할 수 있음.
+
+  - `default` 값을 정의해 줄 수도 있다. `default` 값이 있으면 `required: true`를 작성하지 않아도 된다.
+
+```javascript
+const videoSchema = new mongoose.Schema({
+  vlog_title: { type: String, required: true },
+  vlog_desc: { type: String, required: true },
+  published_date: { type: Date, required: true, default: Date.now },
+  hashtags: [{ type: String }],
+  meta: {
+    views: { type: Number, required: true, default: 0 },
+    rating: { type: Number, required: true, default: 0 },
+  },
+});
 ```

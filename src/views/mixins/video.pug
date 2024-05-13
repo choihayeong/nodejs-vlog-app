@@ -2,8 +2,7 @@ mixin video(info)
     div 
         h4 
             a(href=`/videos/${info._id}`)=info.vlog_title 
-        ul 
-            li #{info.meta.rating}/5
-            //- li #{info.comments} comments.
-            li Posted #{info.published_date}.
-            li #{info.meta.views} views.
+        p=info.vlog_desc
+        small=info.published_date
+    
+    hr

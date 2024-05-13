@@ -1,8 +1,10 @@
 extends base
 
 block content 
+	if errMessage
+		p=errMessage
 	form(method="post") 
-		input(type="text", name="vlog_title", placeholder="title", required)
-		input(type="text", name="vlog_desc", placeholder="description", required)
+		input(type="text", name="vlog_title", maxlength=80, placeholder="title", required)
+		input(type="text", name="vlog_desc", minlength=30, placeholder="description", required)
 		input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", required)
 		input(type="submit", value="Upload")
