@@ -6,17 +6,9 @@ const handleSearch = (err, data) => {
 };
 
 export const home = async (req, res) => {
-  // videoModel.find({}).then(handleSearch);
+  const videos = await videoModel.find({});
 
-  try {
-    console.log("top");
-    const videos = await videoModel.find({});
-    console.log(videos);
-    console.log("finished");
-    return res.render("home", { pageTitle: "Home", videos: [] });
-  } catch {
-    return res.send("server error");
-  }
+  return res.render("home", { pageTitle: "Home", videos });
 };
 
 export const getVideo = (req, res) => {
@@ -45,8 +37,19 @@ export const searchVideo = (req, res) => res.send("Search Video");
 export const getUploadVideo = (req, res) =>
   res.render("upload", { pageTitle: "Upload your video" });
 
-export const postUploadVideo = (req, res) => {
-  const { vlog_title } = req.body;
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  await videoModel.create({
+    vlog_title,
+    vlog_desc,
+    published_date: Date.now(),
+    hashtags: hashtags.split(",").map((item) => `#${item}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
 
   return res.redirect("/");
 };

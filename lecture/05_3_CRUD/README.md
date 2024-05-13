@@ -161,3 +161,101 @@ top
 [] <- videos
 finished
 ```
+
+### Conclusion
+
+- `videoController.js`에서 home화면으로 렌더링하는 Controller의 쿼리문을 다음과 같이 정리
+
+```javascript
+export const home = async (req, res) => {
+  const videos = await videoModel.find({});
+
+  return res.render("home", { pageTitle: "Home", videos });
+};
+```
+
+## Create
+
+- 데이터를 생성 (1) : `videoController.js`에서 upload video를 할 때를 보면 된다.
+
+```pug
+//- upload.pug
+extends base
+
+block content
+	form(method="post")
+		input(type="text", name="vlog_title", placeholder="title", required)
+		input(type="text", name="vlog_desc", placeholder="description", required)
+		input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", required)
+		input(type="submit", value="Upload")
+```
+
+```javascript
+// videoController.js
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  const newVideo = new videoModel({
+    vlog_title,
+    vlog_desc,
+    published_date: Date.now(),
+    hashtags: hashtags.split(",").map((item) => `#${item}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
+
+  console.log(newVideo);
+
+  await newVideo.save();
+
+  return res.redirect("/");
+};
+```
+
+- 다음과 같은 콘솔 결과를 볼 수 있다. `_id` 값은 mongoose에서 부여해준 값.
+
+```bash
+{
+  vlog_title: 'Hi there 🖐️' ,
+  vlog_desc: 'This is wetube',
+  published_date: 2024-05-13T04:58:17.555Z,
+  hashtags: [ '#vlog', '#nodejs', '#app' ],
+  meta: { views: 0, rating: 0 },
+  _id: new ObjectId('66419de9fa793174d0d34a09')
+}
+```
+
+### Command Prompt
+
+- 윈도우 커맨드 창에서 mongosh를 실행 후 `show dbs`를 실행하면 `vlog-app` db가 생성된 것을 볼 수 있다.
+
+- `use vlog-app`을 커맨드 창에 실행하면 `switched to db vlog-app`이라는 결과가 뜬다.
+
+- `show collections`를 실행하면 `videos` 라는 db의 document중 하나가 있다는 것을 볼 수 있다.
+
+- `db.videos.find()`를 실행하면 `videos` 라는 db의 document의 데이터를 확인할 수 있다. (sql의 SELECT 문과 비슷한 듯?)
+
+### dbModel.Create({});
+
+- 데이터를 생성 (2) : `Create({})` 를 이용하여 다음과 같이 생성도 가능함.
+
+```javascript
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  await videoModel.create({
+    vlog_title,
+    vlog_desc,
+    published_date: Date.now(),
+    hashtags: hashtags.split(",").map((item) => `#${item}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
+
+  return res.redirect("/");
+};
+```
