@@ -11,18 +11,31 @@ export const home = async (req, res) => {
   return res.render("home", { pageTitle: "Home", videos });
 };
 
-export const getVideo = (req, res) => {
+export const getVideo = async (req, res) => {
   const { id } = req.params;
+  const video = await videoModel.findById(id);
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
 
   return res.render("watch", {
-    pageTitle: `Watching`,
+    pageTitle: video.vlog_title,
+    video,
   });
 };
-export const getEditVideo = (req, res) => {
+
+export const getEditVideo = async (req, res) => {
   const { id } = req.params;
+  const video = await videoModel.findById(id);
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
 
   return res.render("edit", {
-    pageTitle: `Editing:`,
+    pageTitle: `Editing: ${video.vlog_title}`,
+    video,
   });
 };
 export const postEditVideo = (req, res) => {
