@@ -47,9 +47,10 @@ export const getVideo = async (req, res) => {
 };
 ```
 
-- template (`watch.pug`)
+- template (`watch.pug`, `edit.pug`)
 
 ```pug
+//- watch.pug
 extends base
 
 block content
@@ -57,4 +58,17 @@ block content
   small=video.published_date
   hr
   a(href=`${video.id}/edit`) Edit Video &rarr;
+```
+
+```pug
+//- edit.pug
+extends base.pug
+
+block content
+  h4 Change Title of Video
+  form(method="POST")
+    input(type="text", name="vlog_title", placeholder="Video Title", value=video.vlog_title, required)
+    input(type="text", name="vlog_desc", minlength=30, placeholder="description", value=video.vlog_desc, required)
+    input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", value=video.hashtags.join(), required)
+    input(value="Save", type="submit")
 ```

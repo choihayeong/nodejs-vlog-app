@@ -38,9 +38,23 @@ export const getEditVideo = async (req, res) => {
     video,
   });
 };
-export const postEditVideo = (req, res) => {
+
+export const postEditVideo = async (req, res) => {
   const { id } = req.params;
-  const { vlog_title } = req.body;
+  const video = await videoModel.findById(id);
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
+
+  video.vlog_title = vlog_title;
+  video.vlog_desc = vlog_desc;
+  video.hashtags = hashtags
+    .split(",")
+    .map((item) => (item.startsWith("#") ? item : `#${item}`));
+
+  await video.save();
 
   return res.redirect(`/videos/${id}`);
 };
@@ -57,7 +71,9 @@ export const postUploadVideo = async (req, res) => {
     await videoModel.create({
       vlog_title,
       vlog_desc,
-      hashtags: hashtags.split(",").map((item) => `#${item}`),
+      hashtags: hashtags
+        .split(",")
+        .map((item) => (item.startWith("#") ? item : `#${item}`)),
     });
 
     return res.redirect("/");
