@@ -95,3 +95,7 @@ export const postEditVideo = async (req, res) => {
   // ...
 };
 ```
+
+#### After that refactoring
+
+- [refactor README](https://github.com/choihayeong/nodejs-vlog-app/tree/main/lecture/05_2_mongo_DB#refactor)
