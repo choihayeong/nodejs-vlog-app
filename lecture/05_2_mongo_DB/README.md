@@ -79,6 +79,176 @@ db.on("error", handleError);
 db.once("open", handleOpen);
 ```
 
-#### 참고링크
+### Middlewares
+
+- Mongoose에서 middlewares란 request 중간에 가로채서 뭔가를 실행하는 역할
+
+  - [Mongoose에서 middlewares](https://mongoosejs.com/docs/middleware.html#pre)
+
+- Mongoose에서 middlewares는 Model이 생성되기 전에 만들어야함
+
+  - `src/models/Video.js` 에서 `const videoModel = mongoose.model("Video", videoSchema);` 전에 작성해준다.
+
+  ```javascript
+  // Middleware
+  videoSchema.pre("save", async function () {
+    this.hashtags = this.hashtags[0]
+      .split(",")
+      .map((item) => (item.startsWith("#") ? item : `#${item}`));
+  });
+  ```
+
+### Refactor
+
+- `src/models/Video.js` 에서 middleware의 hashtags 관련 함수를 따로 정의해줌
+
+```javascript
+import mongoose from "mongoose";
+
+export const formatHashtags = (tags) =>
+  tags.split(",").map((item) => (item.startsWith("#") ? item : `#${item}`));
+
+const videoSchema = new mongoose.Schema({
+  // ...
+});
+```
+
+- `videoController.js`에서 위의 `formatHashtags`를 임포트 한다.
+
+```javascript
+import videoModel, { formatHashtags } from "../models/Video";
+
+// ...
+
+export const postEditVideo = async (req, res) => {
+  const { id } = req.params;
+  const video = await videoModel.exists({ _id: id });
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
+
+  await videoModel.findByIdAndUpdate(id, {
+    vlog_title,
+    vlog_desc,
+    hashtags: formatHashtags(hashtags) /* 해당 부분 수정 */,
+  });
+
+  return res.redirect(`/videos/${id}`);
+};
+
+// ...
+
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  try {
+    await videoModel.create({
+      vlog_title,
+      vlog_desc,
+      hashtags: formatHashtags(hashtags) /* 해당 부분 수정 */,
+    });
+
+    return res.redirect("/");
+  } catch (err) {
+    return res.render("upload", {
+      pageTitle: "Upload your video",
+      errMessage: err._message,
+    });
+  }
+};
+```
+
+#### Statics
+
+- 위의 `src/models/Video.js`에서 `formatHashtags` 함수를 다시 정리
+
+  - [mongoose static](<https://mongoosejs.com/docs/api/schema.html#Schema.prototype.static()>)
+
+```javascript
+import mongoose from "mongoose";
+
+/* 아래 주석 처리된 부분 삭제 */
+// export const formatHashtags = (tags) => tags.split(",").map((item) => item.startsWith("#") ? item : `#${item}`);
+
+const videoSchema = new mongoose.Schema({
+  // ...
+});
+
+/* 아래 부분 추가 */
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((item) => (item.startsWith("#") ? item : `#${item}`));
+});
+
+// ...
+```
+
+- `videoController.js`에서 다음과 같이 정리함
+
+```javascript
+import videoModel from "../models/Video";
+
+// ...
+
+export const postEditVideo = async (req, res) => {
+  const { id } = req.params;
+  const video = await videoModel.exists({ _id: id });
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
+
+  await videoModel.findByIdAndUpdate(id, {
+    vlog_title,
+    vlog_desc,
+    hashtags: videoModel.formatHashtags(hashtags) /* 해당 부분 수정 */,
+  });
+
+  return res.redirect(`/videos/${id}`);
+};
+
+// ...
+
+export const postUploadVideo = async (req, res) => {
+  const { vlog_title, vlog_desc, hashtags } = req.body;
+
+  try {
+    await videoModel.create({
+      vlog_title,
+      vlog_desc,
+      hashtags: videoModel.formatHashtags(hashtags) /* 해당 부분 수정 */,
+    });
+
+    return res.redirect("/");
+  } catch (err) {
+    return res.render("upload", {
+      pageTitle: "Upload your video",
+      errMessage: err._message,
+    });
+  }
+};
+```
+
+#### 템플릿 파일 정리 (`views/mixins/video.pug`)
+
+```pug
+mixin video(info)
+  div
+    h4
+      a(href=`/videos/${info._id}`)=info.vlog_title
+    p=info.vlog_desc
+    ul
+      each hashtag in info.hashtags
+        li=hashtag
+    small=info.published_date
+
+  hr
+```
+
+##### 참고링크
 
 - [npm : mongoose](https://www.npmjs.com/package/mongoose)

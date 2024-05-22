@@ -1,10 +1,5 @@
 import videoModel from "../models/Video";
 
-const handleSearch = (err, data) => {
-  console.log("errors", err);
-  console.log("data", data);
-};
-
 export const home = async (req, res) => {
   const videos = await videoModel.find({});
 
@@ -51,9 +46,7 @@ export const postEditVideo = async (req, res) => {
   await videoModel.findByIdAndUpdate(id, {
     vlog_title,
     vlog_desc,
-    hashtags: hashtags
-      .split(",")
-      .map((item) => (item.startsWith("#") ? item : `#${item}`)),
+    hashtags: videoModel.formatHashtags(hashtags),
   });
 
   return res.redirect(`/videos/${id}`);
@@ -72,9 +65,7 @@ export const postUploadVideo = async (req, res) => {
     await videoModel.create({
       vlog_title,
       vlog_desc,
-      hashtags: hashtags
-        .split(",")
-        .map((item) => (item.startWith("#") ? item : `#${item}`)),
+      hashtags: videoModel.formatHashtags(hashtags),
     });
 
     return res.redirect("/");

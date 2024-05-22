@@ -3,6 +3,9 @@ mixin video(info)
         h4 
             a(href=`/videos/${info._id}`)=info.vlog_title 
         p=info.vlog_desc
+        ul 
+            each hashtag in info.hashtags 
+                li=hashtag
         small=info.published_date
     
     hr
