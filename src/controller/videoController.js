@@ -41,23 +41,24 @@ export const getEditVideo = async (req, res) => {
 
 export const postEditVideo = async (req, res) => {
   const { id } = req.params;
-  const video = await videoModel.findById(id);
+  const video = await videoModel.exists({ _id: id });
   const { vlog_title, vlog_desc, hashtags } = req.body;
 
   if (!video) {
     return res.render("404", { pageTitle: "404 Not Found" });
   }
 
-  video.vlog_title = vlog_title;
-  video.vlog_desc = vlog_desc;
-  video.hashtags = hashtags
-    .split(",")
-    .map((item) => (item.startsWith("#") ? item : `#${item}`));
-
-  await video.save();
+  await videoModel.findByIdAndUpdate(id, {
+    vlog_title,
+    vlog_desc,
+    hashtags: hashtags
+      .split(",")
+      .map((item) => (item.startsWith("#") ? item : `#${item}`)),
+  });
 
   return res.redirect(`/videos/${id}`);
 };
+
 export const deleteVideo = (req, res) => res.send("Delete Video");
 export const searchVideo = (req, res) => res.send("Search Video");
 

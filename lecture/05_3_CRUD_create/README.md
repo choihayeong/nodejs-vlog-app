@@ -280,7 +280,9 @@ export const postUploadVideo = async (req, res) => {
     await videoModel.create({
       vlog_title,
       vlog_desc,
-      hashtags: hashtags.split(",").map((item) => `#${item}`),
+      hashtags: hashtags
+        .split(",")
+        .map((item) => (item.startsWith("#") ? item : `#${item}`)),
     });
 
     return res.redirect("/");

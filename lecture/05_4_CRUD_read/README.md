@@ -72,3 +72,55 @@ block content
     input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", value=video.hashtags.join(), required)
     input(value="Save", type="submit")
 ```
+
+### 404 페이지 추가
+
+- `videoController.js`에서 `getVideo`에서 `video`의 값이 `null`일 경우 404 페이지로 렌더링 하도록 수정
+
+  - `src/views/` 폴더 내 `404.pug` 파일 생성 후 다음과 같이 작성
+
+  ```pug
+  extends base
+  ```
+
+```javascript
+export const getVideo = async (req, res) => {
+  const { id } = req.params;
+  const video = await videoModel.findById(id);
+
+  if (!video) {
+    return res.render("404", { pageTitle: "404 Not Found" });
+  }
+
+  return res.render("watch", {
+    pageTitle: video.vlog_title,
+    video,
+  });
+};
+```
+
+### etc.
+
+- `base.pug` 파일 중 nav에 Home으로 돌아가는 부분 추가
+
+```pug
+doctype html
+html(lang="ko")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{pageTitle} | Easy-Vlog
+    link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+  body
+    header
+      h1=pageTitle
+      nav
+        ul
+          li
+            a(href="/videos/upload") Upload Video
+          li
+            a(href="/") Home
+    main
+      block content
+  include partials/footer
+```
