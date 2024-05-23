@@ -1,7 +1,7 @@
 import videoModel from "../models/Video";
 
 export const home = async (req, res) => {
-  const videos = await videoModel.find({});
+  const videos = await videoModel.find({}).sort({ published_date: "desc" });
 
   return res.render("home", { pageTitle: "Home", videos });
 };
@@ -52,8 +52,31 @@ export const postEditVideo = async (req, res) => {
   return res.redirect(`/videos/${id}`);
 };
 
-export const deleteVideo = (req, res) => res.send("Delete Video");
-export const searchVideo = (req, res) => res.send("Search Video");
+export const deleteVideo = async (req, res) => {
+  const { id } = req.params;
+
+  await videoModel.findByIdAndDelete(id);
+
+  return res.redirect("/");
+};
+
+export const searchVideo = async (req, res) => {
+  const { keyword } = req.query;
+
+  let videos = [];
+
+  if (keyword) {
+    videos = await videoModel.find({
+      vlog_title: {
+        $regex: new RegExp(`${keyword}$`, "i"),
+      },
+    });
+
+    // return res.render("search", { pageTitle: "Search Video", videos });
+  }
+
+  return res.render("search", { pageTitle: "Search Video", videos });
+};
 
 export const getUploadVideo = (req, res) =>
   res.render("upload", { pageTitle: "Upload your video" });

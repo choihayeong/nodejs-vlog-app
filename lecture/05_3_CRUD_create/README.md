@@ -162,13 +162,21 @@ top
 finished
 ```
 
+### Sort
+
+- videos 데이터들이 발행한 날짜(published_date)의 최신(내림차순)으로 보여지고 싶을 때 다음과 같이 작성한다.
+
+```javascript
+const videos = await videoModel.find({}).sort({ published_date: "desc" });
+```
+
 ### Conclusion
 
 - `videoController.js`에서 home화면으로 렌더링하는 Controller의 쿼리문을 다음과 같이 정리
 
 ```javascript
 export const home = async (req, res) => {
-  const videos = await videoModel.find({});
+  const videos = await videoModel.find({}).sort({ published_date: "desc" });
 
   return res.render("home", { pageTitle: "Home", videos });
 };
