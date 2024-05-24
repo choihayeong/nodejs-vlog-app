@@ -1,8 +1,8 @@
-# mongo DB
+# Database
 
-> document-based : 일반적으로 DB는 sql-based임. MongoDB는 Json 같은 문서형식으로 구성된 DB임.
+## Mongo DB : document-based, 일반적으로 DB는 sql-based임. MongoDB는 Json 같은 문서형식으로 구성된 DB임.
 
-## Installation
+### Installation
 
 - [MongoDB Official Site](https://www.mongodb.com/)
 
@@ -10,11 +10,11 @@
 
 - [Window Download Center](https://www.mongodb.com/try/download/community) : WindowOS 설치
 
-## Connecting to MongoDB
+### Connecting to MongoDB
 
 > WindowOS 기준
 
-### `mongod` 명령어
+#### `mongod` 명령어
 
 - 윈도우에서 `시스템 환경변수 편집`에 들어가서 오른쪽 하단 `환경 변수`로 들어간다.
 
@@ -24,7 +24,7 @@
 
 - 커맨드 창에서 `mongod`를 치면 작동을 하게 됨.
 
-### `mongo` 명령어(or `mongosh`)
+#### `mongo` 명령어(or `mongosh`)
 
 - [nomad coder 강의 내 댓글 참고](https://nomadcoders.co/wetube/lectures/2671/comments/112904)
 
@@ -36,7 +36,7 @@
 
   - `mongo` : MongoDB에 대한 Shell Interface (like Client)
 
-### mongoose 설치
+#### mongoose 설치
 
 ```bash
 npm install mongoose
@@ -252,3 +252,11 @@ mixin video(info)
 ##### 참고링크
 
 - [npm : mongoose](https://www.npmjs.com/package/mongoose)
+
+## MariaDB
+
+- [MariaDB 설치](https://mariadb.org/download)
+
+- [Heidi SQL 설치](https://www.heidisql.com/download.php)
+
+- [github repository](https://github.com/choihayeong/easy-2-vlog?tab=readme-ov-file#easy_2_vlog)
