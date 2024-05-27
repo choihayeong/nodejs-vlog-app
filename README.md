@@ -1,6 +1,6 @@
 # nodejs-vlog-app
 
-nodejs-vlog-app built using node.js, express, mariadb and ES6
+nodejs-vlog-app built using node.js, express, no-sql based database(mongoDB) and ES6
 
 ## 📝 Note List
 
