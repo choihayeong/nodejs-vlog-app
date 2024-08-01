@@ -97,7 +97,7 @@ block content
       block content
 ```
 
-## Hashing Passwords
+## Hashing Passwords (패스워드 해싱)
 
 - [npm : bcrypt](https://www.npmjs.com/package/bcrypt) : <b>rainbow table</b> 공격을 막아줌...
 
