@@ -16,8 +16,11 @@ html(lang="ko")
             a(href="/") Home
           li 
             a(href="/search") Search 
+          //- if !req.session.loggedIn
           li 
             a(href="/join") Join 
+          li 
+            a(href="/login") Login 
           li 
             a(href="/join2") Join member
     main 

@@ -57,20 +57,21 @@ export const postLogin = async (req, res) => {
   }
 
   // check if password correct
-  const ok = await bcrypt.compare(
-    user_password,
-    user.user_password,
-    function (err, result) {
-      if (result) {
-        return res.redirect("/");
-      } else {
-        return res.status(400).render("login", {
-          pageTitle: PAGE_TITLE,
-          errorMessage: "Wrong Password.",
-        });
-      }
-    },
-  );
+  const ok = await bcrypt.compare(user_password, user.user_password);
+
+  if (!ok) {
+    return res.status(400).render("login", {
+      PAGE_TITLE,
+      errorMessage: "Wrong Password",
+    });
+  }
+
+  // 유저가 로그인 하면 그 유저에 대한 정보를 세션에 담음
+  req.session.loggedIn = true;
+  req.session.user = user_name;
+
+  console.log("LOG MEMBER IN : COMING SOON!");
+  res.redirect("/");
 };
 
 export const editUser = (req, res) => res.send("Edit User Info");
