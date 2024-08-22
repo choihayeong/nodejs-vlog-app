@@ -24,17 +24,11 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
-  req.sessionStore.all((error, sessions) => {
-    console.log(sessions);
-    next();
-  });
-});
-
-// app.get("/add-one", (req, res, next) => {
-//   req.session.rice += 1;
-
-//   return res.send(`${req.session.id} ${req.session.rice}`);
+// app.use((req, res, next) => {
+//   req.sessionStore.all((error, sessions) => {
+//     console.log(sessions);
+//     next();
+//   });
 // });
 
 app.use(localsMiddleware);
