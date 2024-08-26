@@ -74,6 +74,67 @@ export const postLogin = (req, res, next) => {
 
 ![image](https://github.com/user-attachments/assets/7e537f8f-ab9e-4d4d-84d5-bde3636fb878)
 
-- `base.pug`에 있는 네비게이션 처리
+### `base.pug`에 있는 네비게이션 처리
 
-  - req.session.loggedIn === true 일 경우 네비게이션에 Join과 Login은 안보이게 처리
+- `req.session.loggedIn === true` 일 경우 네비게이션에 Join과 Login은 안보이게 처리
+
+* `src/middlewares.js` 파일 생성 후 `server.js`에 다음과 같이 작성
+
+  - `server.js`
+
+  ```javascript
+  import rootRouter from "./routers/rootRouter";
+  import videoRouter from "./routers/videoRouter";
+  import userRouter from "./routers/userRouter";
+  import { localsMiddleware } from "./middlewares"; // middlewares.js 임포트
+
+  // ...
+  ```
+
+  - `src/middleware.js`
+
+  ```javascript
+  export const localsMiddleware = (req, res, next) => {
+    console.log(req.session);
+  };
+  ```
+
+* `src/middleware.js` 파일에서 사이트 접속시 응답(response)를 다음과 같이 하도록 설정
+
+```javascript
+export const localsMiddleware = (req, res, next) => {
+  res.locals.loggedIn = Boolean(req.session.loggedIn); // 로그인 후 postLogin 메서드에서 req.session.loggedIn을 true로 설정한 것을 locals.loggedIn도 같은 값으로 설정해줌
+  res.locals.siteName = "Easy 2 Vlog";
+  res.locals.loggedInUser = req.session.user; // 로그인 후 postLogin 메서드에서 user_name 값을 lcoals.loggedInUser에 같은 값으로 설정해줌
+
+  console.log(res.locals);
+
+  next();
+};
+```
+
+- `base.pug`를 다음과 같이 처리해주면 된다.
+
+```pug
+body
+  header
+    h1=pageTitle
+    nav
+      ul
+        li
+          a(href="/videos/upload") Upload Video
+        li
+          a(href="/") Home
+        li
+          a(href="/search") Search
+        if loggedIn
+          li
+            a(href="/logout") Log out
+          li
+            a(href="/my-profile") #{loggedInUser}의 프로필
+        else
+          li
+            a(href="/join") Join
+          li
+             a(href="/login") Login
+```
