@@ -64,4 +64,8 @@ users
 videos
 ```
 
-- sessions은 브라우저가 backend 서버를 방문할 때 만들어짐 `http://localhost:3030/` 으로 접속하고 커맨드창에 db.sessions.find()를 입력하면 다음과 같은 결과가 나온다.
+- sessions은 브라우저가 backend 서버를 방문할 때 만들어짐 `http://localhost:3030/` 으로 접속하고 커맨드창에 `db.sessions.find()`를 입력하면 다음과 같은 결과가 나온다.
+
+  - 로그인 후 서버 종료 후 재 접속하면 다시 로그인 되어 있는 상태로 나온다.
+
+  ![image](https://github.com/user-attachments/assets/00f5d465-1b88-4558-944e-ee120247d64a)
