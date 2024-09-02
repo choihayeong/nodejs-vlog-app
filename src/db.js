@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/vlog-app",
+  process.env.DB_URL,
   // {
   //   useNewUrlParser: true,
   //   useUnifiedToplogy: true,

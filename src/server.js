@@ -19,21 +19,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "Hello!",
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    // cookie: {
+    //   maxAge: 20000,
+    // },
     store: MongoStore.create({
-      mongoUrl: "mongodb://127.0.0.1:27017/vlog-app",
+      mongoUrl: process.env.DB_URL,
     }),
   }),
 );
-
-// app.use((req, res, next) => {
-//   req.sessionStore.all((error, sessions) => {
-//     console.log(sessions);
-//     next();
-//   });
-// });
 
 app.use(localsMiddleware);
 app.use("/", rootRouter);
