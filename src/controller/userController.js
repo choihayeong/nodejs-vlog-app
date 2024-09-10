@@ -74,6 +74,39 @@ export const postLogin = async (req, res) => {
   res.redirect("/");
 };
 
+export const startGithubLogin = (req, res) => {
+  const BASE_URL = `https://github.com/login/oauth/authorize`;
+  const config = {
+    client_id: process.env.GH_CLIENT,
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const CUSTOM_URL = `${BASE_URL}?${params}`;
+
+  return res.redirect(CUSTOM_URL);
+};
+
+export const finishGithubLogin = async (req, res) => {
+  const BASE_URL = "https://github.com/login/oauth/access_token";
+  const config = {
+    client_id: process.env.GH_CLIENT,
+    client_secret: process.env.GH_SECRET,
+    code: req.query.code,
+  };
+  const params = new URLSearchParams(config).toString();
+  const CUSTOM_URL = `${BASE_URL}?${params}`;
+  const data = await fetch(CUSTOM_URL, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+  });
+  const json = await data.json();
+
+  console.log(json);
+};
+
 export const editUser = (req, res) => res.send("Edit User Info");
 export const deleteUser = (req, res) => res.send("Delete User");
 export const logout = (req, res) => res.send("Logout");
