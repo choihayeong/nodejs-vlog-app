@@ -82,7 +82,7 @@ POST https://github.com/login/oauth/access_token
 
 ```.env
 GH_CLIENT=Ov23lio3vysGH7WwrWv2
-GH_SECRET=13b9b911a349374bd1923f527adbfa4d7e3d6b53
+GH_SECRET=
 ```
 
 ```javascript
