@@ -152,3 +152,5 @@ export const finishGithubLogin = async (req, res) => {
 - [Github Developers Docs: OAuth App Scope](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps)
 
 - [MDN : URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+
+- [REST API](https://docs.github.com/en/rest/users)
