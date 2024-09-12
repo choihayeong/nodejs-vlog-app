@@ -72,6 +72,8 @@ export const startGithubLogin = (req, res) => {
 
 - 해당 페이지 진입시 Authorize를 누르면 OAuth Setting 페이지에서 `Authorize callback URL`에 적혀있는 곳으로 리다이렉트 됨
 
+  - `http://localhost:3030/users/github/finish` 으로 변경 후 `/users/github/finish`에 대한 router, controller 함수를 만들어 줌 => Step02
+
 ## Step02 : 유저를 사이트로 리디렉션
 
 ```
@@ -115,10 +117,38 @@ export const finishGithubLogin = async (req, res) => {
 };
 ```
 
+## Step03 : Access to user api
+
+- (Optional) npm `node-fetch` 패키지 설치 (node.js v.18 이상부터는 패키지 추가 안해도 됨)
+
+```bash
+npm i node-fetch
+```
+
+- `userController.js`에 `res.send(JSON.stringify(json))` 추가
+
+```javascript
+export const finishGithubLogin = async (req, res) => {
+  // ...
+
+  res.send(JSON.stringify(json));
+};
+```
+
+- 다음과 같이 렌더링됨
+
+```
+{
+  access_token: 'gho_',
+  token_type: 'bearer',
+  scope: 'read:user,user:email'
+}
+```
+
 #### References
 
-- [Github Developers Docs](https://docs.github.com/ko/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
+- [Github Developers Docs: OAuth App](https://docs.github.com/ko/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
 
-- [Github Developers Docs](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps)
+- [Github Developers Docs: OAuth App Scope](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps)
 
 - [MDN : URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
