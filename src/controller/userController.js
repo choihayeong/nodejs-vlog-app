@@ -48,7 +48,7 @@ export const postLogin = async (req, res) => {
   const { user_name, user_password } = req.body;
   const PAGE_TITLE = "Login";
 
-  const user = await userModel.findOne({ user_name });
+  const user = await userModel.findOne({ user_name, social_only: false });
   if (!user) {
     return res.status(400).render("login", {
       pageTitle: PAGE_TITLE,
@@ -118,8 +118,6 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
 
-    // console.log(userData);
-
     const emailData = await (
       await fetch(`${API_URL}/user/emails`, {
         headers: {
@@ -128,47 +126,47 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
 
-    // console.log(emailData);
-
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true,
     );
 
     if (!emailObj) {
+      // set notification
       return res.redirect("/login");
     }
 
     // github login의 이메일이 DB에 존재하면 로그인 시켜쥼
-    const existingUser = await userModel.findOne({
+    let user = await userModel.findOne({
       user_email: emailObj.email,
     });
 
-    if (existingUser) {
-      req.session.loggedIn = true;
-      req.session.user = existingUser.user_name;
-
-      return res.redirect("/");
-    } else {
+    if (!user) {
       // create an account (DB에 존재하지 않을 경우)
-      const user = await userModel.create({
+      user = await userModel.create({
         user_email: emailObj.email,
         social_only: true,
+        avatar_url: userData.avartar_url,
         user_name: userData.name,
         user_password: "",
         user_location: userData.location,
       });
-
-      req.session.loggedIn = true;
-      req.session.user = user.user_name;
-
-      return res.redirect("/");
     }
+
+    req.session.loggedIn = true;
+    req.session.user = user.user_name;
+
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
 };
 
+export const logout = (req, res) => {
+  req.session.destroy();
+
+  return res.redirect("/");
+};
+
 export const editUser = (req, res) => res.send("Edit User Info");
 export const deleteUser = (req, res) => res.send("Delete User");
-export const logout = (req, res) => res.send("Logout");
 export const getUserProfile = (req, res) => res.send("User Profile");
