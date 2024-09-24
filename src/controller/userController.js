@@ -68,9 +68,8 @@ export const postLogin = async (req, res) => {
 
   // 유저가 로그인 하면 그 유저에 대한 정보를 세션에 담음
   req.session.loggedIn = true;
-  req.session.user = user_name;
+  req.session.user = user;
 
-  console.log("LOG MEMBER IN : COMING SOON!");
   res.redirect("/");
 };
 
@@ -153,7 +152,7 @@ export const finishGithubLogin = async (req, res) => {
     }
 
     req.session.loggedIn = true;
-    req.session.user = user.user_name;
+    req.session.user = user;
 
     return res.redirect("/");
   } else {
@@ -167,6 +166,14 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const editUser = (req, res) => res.send("Edit User Info");
+export const getEditUser = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+export const postEditUser = (req, res) => {
+  return res.render("edit-profile");
+};
+
+// export const editUser = (req, res) => res.send("Edit User Info");
 export const deleteUser = (req, res) => res.send("Delete User");
 export const getUserProfile = (req, res) => res.send("User Profile");
