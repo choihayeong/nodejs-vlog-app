@@ -170,10 +170,28 @@ export const getEditUser = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEditUser = (req, res) => {
-  return res.render("edit-profile");
+export const postEditUser = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { user_email, user_name, user_location },
+  } = req;
+
+  const updatedUser = await userModel.findByIdAndUpdate(
+    _id,
+    {
+      user_email,
+      user_name,
+      user_location,
+    },
+    { new: true },
+  );
+
+  req.session.user = updatedUser;
+
+  return res.redirect("/users/edit");
 };
 
-// export const editUser = (req, res) => res.send("Edit User Info");
 export const deleteUser = (req, res) => res.send("Delete User");
 export const getUserProfile = (req, res) => res.send("User Profile");

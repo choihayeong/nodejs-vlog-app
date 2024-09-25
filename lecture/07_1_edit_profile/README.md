@@ -66,3 +66,9 @@ rootRouter
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 ```
+
+<hr />
+
+### Code Challenge
+
+> `src/models/User.js`에서 `userSchema`를 확인해 보면, `user_email`, `user_name`의 속성 중 `unique: true` 이다. <br /> 이 부분을 참고하면, `/users/edit` 페이지에서 유저의 정보를 업데이트할 때 다른 유저와 중복되는 user_email과 user_name을 가지면 안된다.
