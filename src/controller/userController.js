@@ -178,6 +178,61 @@ export const postEditUser = async (req, res) => {
     body: { user_email, user_name, user_location },
   } = req;
 
+  /**
+   * ### code challenge
+   */
+
+  const prevUserInfo = await userModel.findById(_id);
+
+  const renderError = (message) => {
+    res.status(400).render("edit-profile", {
+      pageTitle: "Edit Profile",
+      errorMessage: message,
+    });
+  };
+
+  // case 1) user_email, user_name 둘 다 이미 존재할 때
+  const existBoth = {
+    status: await userModel.exists({
+      $and: [{ user_email }, { user_name }],
+    }),
+    errorMessage:
+      "This user Email/Name already exsists or you haven't change yet",
+  };
+
+  if (existBoth.status) {
+    return renderError(existBoth.errorMessage);
+  }
+
+  // case 2) / case 3) user_email / user_name 둘 중 하나 이미 존재하고 있는 것으로 바꾸려고 시도할 때
+  const exsistsEither = {
+    status: await userModel.exists({
+      $or: [{ user_email }, { user_name }],
+    }),
+    errorEmail: "This user Email already exists.",
+    errorName: "This user Name already exists.",
+  };
+
+  if (exsistsEither.status) {
+    // case 2) user_email을 바꾸려고 할 때
+    if (prevUserInfo.user_email !== user_email) {
+      const exsists_email = await userModel.exists({ user_email });
+
+      if (exsists_email) {
+        return renderError(exsistsEither.errorEmail);
+      }
+    }
+
+    // case 3) user_name을 바꾸려고 할 때
+    if (prevUserInfo.user_name !== user_name) {
+      const exsists_name = await userModel.exists({ user_name });
+
+      if (exsists_name) {
+        return renderError(exsistsEither.errorName);
+      }
+    }
+  }
+
   const updatedUser = await userModel.findByIdAndUpdate(
     _id,
     {
