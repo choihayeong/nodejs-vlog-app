@@ -8,6 +8,8 @@ import {
   finishGithubLogin,
   getEditUser,
   postEditUser,
+  getChangePassword,
+  postChangePassword,
 } from "../controller/userController";
 import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 
@@ -20,6 +22,13 @@ userRouter
   .all(protectorMiddleware)
   .get(getEditUser)
   .post(postEditUser);
+
+userRouter
+  .route("/change-password")
+  .all(protectorMiddleware)
+  .get(getChangePassword)
+  .post(postChangePassword);
+
 userRouter.get("/delete", deleteUser);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);

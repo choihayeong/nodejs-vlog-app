@@ -8,3 +8,8 @@ block content
         input(type="text", name="user_name", placeholder="your unique name", value=loggedInUser.user_name, required) 
         input(type="text", name="user_location", placeholder="your location (optional)", value=loggedInUser.user_location) 
         input(type="submit" value="Update")  
+
+        if !loggedInUser.social_only
+            hr
+
+            a(href="/users/change-password") Change Password &rarr;

@@ -248,5 +248,20 @@ export const postEditUser = async (req, res) => {
   return res.redirect("/users/edit");
 };
 
+export const getChangePassword = (req, res) => {
+  if (req.session.user.social_only) {
+    return res.redirect("/");
+  }
+
+  return res.render("users/change-password", {
+    pageTitle: "Change Password",
+  });
+};
+
+export const postChangePassword = (req, res) => {
+  // send notification
+  return res.redirect("/");
+};
+
 export const deleteUser = (req, res) => res.send("Delete User");
 export const getUserProfile = (req, res) => res.send("User Profile");
