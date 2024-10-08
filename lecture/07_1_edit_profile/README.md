@@ -128,3 +128,11 @@ if (exsistsEither.status) {
   }
 }
 ```
+
+### File Uploads
+
+- `multer` 패키지 설치 (https://www.npmjs.com/package/multer)
+
+```bash
+npm i multer
+```
