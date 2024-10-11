@@ -192,7 +192,7 @@ export const postEditUser = async (req, res) => {
   };
 
   // case 1) user_email, user_name 둘 다 이미 존재할 때
-  const existBoth = {
+  /* const existBoth = {
     status: await userModel.exists({
       $and: [{ user_email }, { user_name }],
     }),
@@ -202,7 +202,7 @@ export const postEditUser = async (req, res) => {
 
   if (existBoth.status) {
     return renderError(existBoth.errorMessage);
-  }
+  } */
 
   // case 2) / case 3) user_email / user_name 둘 중 하나 이미 존재하고 있는 것으로 바꾸려고 시도할 때
   const exsistsEither = {
