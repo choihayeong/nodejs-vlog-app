@@ -1,8 +1,12 @@
 extends base
 
 block content 
-  p=video.vlog_desc
-  small=video.published_date 
+  video(src=`/${video.file_url}`, controls, autoplay)
+
+  div 
+    p=video.vlog_desc
+    small=video.published_date 
+
   hr
   a(href=`${video.id}/edit`) Edit Video &rarr;
   br

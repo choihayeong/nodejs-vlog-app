@@ -12,9 +12,9 @@ import {
   postChangePassword,
 } from "../controller/userController";
 import {
+  avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadFiles,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -25,7 +25,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEditUser)
-  .post(uploadFiles.single("user_avatar"), postEditUser);
+  .post(avatarUpload.single("user_avatar"), postEditUser);
 
 userRouter
   .route("/change-password")
