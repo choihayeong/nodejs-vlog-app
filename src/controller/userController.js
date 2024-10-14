@@ -144,7 +144,7 @@ export const finishGithubLogin = async (req, res) => {
       user = await userModel.create({
         user_email: emailObj.email,
         social_only: true,
-        avatar_url: userData.avartar_url,
+        avatar_url: userData.avatar_url,
         user_name: userData.name,
         user_password: "",
         user_location: userData.location,
@@ -173,10 +173,14 @@ export const getEditUser = (req, res) => {
 export const postEditUser = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatar_url },
     },
     body: { user_email, user_name, user_location },
+    file,
   } = req;
+
+  // console.log(loggedInUser.avatar_url);
+  // console.log(file);
 
   /**
    * ### code challenge
@@ -237,6 +241,7 @@ export const postEditUser = async (req, res) => {
     _id,
     {
       user_email,
+      avatar_url: file ? file.path : avatar_url,
       user_name,
       user_location,
     },
