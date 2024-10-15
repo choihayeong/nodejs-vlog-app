@@ -7,7 +7,11 @@ block content
     p=video.vlog_desc
     small=video.published_date 
 
+  div 
+    small Uploaded By #{owner.user_name}
   hr
-  a(href=`${video.id}/edit`) Edit Video &rarr;
-  br
-  a(href=`${video.id}/delete`) Delete Video &rarr;
+
+  if String(video.owner) === String(loggedInUser._id)
+    a(href=`${video.id}/edit`) Edit Video &rarr;
+    br
+    a(href=`${video.id}/delete`) Delete Video &rarr;

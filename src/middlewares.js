@@ -4,7 +4,6 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
   res.locals.siteName = "Easy 2 Vlog";
   res.locals.loggedInUser = req.session.user || {};
-  // console.log(req.session);
 
   next();
 };
@@ -25,7 +24,6 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
-// export const uploadFiles = multer({ dest: "uploads/" });
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: {

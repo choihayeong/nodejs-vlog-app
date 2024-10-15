@@ -179,9 +179,6 @@ export const postEditUser = async (req, res) => {
     file,
   } = req;
 
-  // console.log(loggedInUser.avatar_url);
-  // console.log(file);
-
   /**
    * ### code challenge
    */
@@ -295,5 +292,18 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/");
 };
 
+export const getUserProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await userModel.findById(id);
+
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User Not Found." });
+  }
+
+  return res.render("users/my-profile", {
+    pageTitle: `${user.user_name} Profile`,
+    user: user,
+  });
+};
+
 export const deleteUser = (req, res) => res.send("Delete User");
-export const getUserProfile = (req, res) => res.send("User Profile");

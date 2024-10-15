@@ -1,3 +1,4 @@
+import userModel from "../models/User";
 import videoModel from "../models/Video";
 
 export const home = async (req, res) => {
@@ -9,6 +10,7 @@ export const home = async (req, res) => {
 export const getVideo = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id);
+  const owner = await userModel.findById(video.owner);
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
@@ -17,6 +19,7 @@ export const getVideo = async (req, res) => {
   return res.render("watch", {
     pageTitle: video.vlog_title,
     video,
+    owner,
   });
 };
 
@@ -71,8 +74,6 @@ export const searchVideo = async (req, res) => {
         $regex: new RegExp(`${keyword}$`, "i"),
       },
     });
-
-    // return res.render("search", { pageTitle: "Search Video", videos });
   }
 
   return res.render("search", { pageTitle: "Search Video", videos });
@@ -82,7 +83,9 @@ export const getUploadVideo = (req, res) =>
   res.render("upload", { pageTitle: "Upload your video" });
 
 export const postUploadVideo = async (req, res) => {
-  // const file = req.file;
+  const {
+    user: { _id },
+  } = req.session;
   const { path: file_url } = req.file;
   const { vlog_title, vlog_desc, hashtags } = req.body;
 
@@ -91,6 +94,7 @@ export const postUploadVideo = async (req, res) => {
       vlog_title,
       vlog_desc,
       file_url,
+      owner: _id,
       hashtags: videoModel.formatHashtags(hashtags),
     });
 
