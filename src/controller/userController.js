@@ -295,18 +295,15 @@ export const postChangePassword = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   const { id } = req.params;
-  const user = await userModel.findById(id);
+  const user = await userModel.findById(id).populate("videos");
 
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User Not Found." });
   }
 
-  const videos = await videoModel.find({ owner: user._id });
-
   return res.render("users/my-profile", {
     pageTitle: `${user.user_name} Profile`,
     user: user,
-    videos,
   });
 };
 

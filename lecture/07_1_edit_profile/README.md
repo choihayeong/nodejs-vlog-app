@@ -136,3 +136,9 @@ if (exsistsEither.status) {
 ```bash
 npm i multer
 ```
+
+### DB realtions
+
+- `populate()` 이용
+
+- Videos의 한개의 video는 owner은 User 하나와 연결되어야함. / User 하나가 소유하는 video는 여러개가 될 수 있음.

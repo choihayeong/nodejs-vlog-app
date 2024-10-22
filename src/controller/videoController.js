@@ -88,13 +88,16 @@ export const postUploadVideo = async (req, res) => {
   const { vlog_title, vlog_desc, hashtags } = req.body;
 
   try {
-    await videoModel.create({
+    const newVideo = await videoModel.create({
       vlog_title,
       vlog_desc,
       file_url,
       owner: _id,
       hashtags: videoModel.formatHashtags(hashtags),
     });
+    const user = await userModel.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
 
     return res.redirect("/");
   } catch (err) {
