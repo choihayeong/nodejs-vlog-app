@@ -1,5 +1,6 @@
 import userModel from "../models/User";
 import bcrypt from "bcrypt";
+import videoModel from "../models/Video";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "join" });
 export const postJoin = async (req, res) => {
@@ -300,9 +301,12 @@ export const getUserProfile = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "User Not Found." });
   }
 
+  const videos = await videoModel.find({ owner: user._id });
+
   return res.render("users/my-profile", {
     pageTitle: `${user.user_name} Profile`,
     user: user,
+    videos,
   });
 };
 

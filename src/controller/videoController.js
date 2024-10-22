@@ -9,8 +9,7 @@ export const home = async (req, res) => {
 
 export const getVideo = async (req, res) => {
   const { id } = req.params;
-  const video = await videoModel.findById(id);
-  const owner = await userModel.findById(video.owner);
+  const video = await videoModel.findById(id).populate("owner");
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
@@ -19,7 +18,6 @@ export const getVideo = async (req, res) => {
   return res.render("watch", {
     pageTitle: video.vlog_title,
     video,
-    owner,
   });
 };
 
