@@ -1,8 +1,8 @@
 extends base
 
 block content 
-	if errMessage
-		p=errMessage
+	if errorMessage
+		p=errorMessage
 	form(method="post", enctype="multipart/form-data") 
 		label(for="vlog_video") Video File 
 		input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required)
