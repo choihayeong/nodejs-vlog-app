@@ -247,3 +247,17 @@ export const getUserProfile = async (req, res) => {
   });
 };
 ```
+
+### Bugfix
+
+- `postUploadVideo` 메서드가 실행될 때마다 user.save()가 진행되는데 이 코드가 실행될때마다 bcrypt 해시가 실행되는 문제가 있음
+
+  - 비밀번호가 수정될 때만 hash 할수 있도록 해줘야함. (`isModified()` 메서드 사용)
+
+```javascript
+/* /src/models/User.js */
+
+userSchema.pre("save", async function () {
+  this.user_password = await bcrypt.hash(this.user_password, 5);
+});
+```
