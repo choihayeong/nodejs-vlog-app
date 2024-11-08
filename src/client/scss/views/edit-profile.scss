@@ -1,0 +1,19 @@
+form {
+  label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.625rem;
+  }
+}
+
+.edit-profile {
+  &__password {
+    margin-bottom: 3.125rem;
+    text-align: center;
+
+    a {
+      color: $point--color;
+      text-decoration: underline;
+    }
+  }
+}

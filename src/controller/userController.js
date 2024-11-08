@@ -1,6 +1,5 @@
 import userModel from "../models/User";
 import bcrypt from "bcrypt";
-import videoModel from "../models/Video";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "join" });
 export const postJoin = async (req, res) => {
@@ -295,7 +294,13 @@ export const postChangePassword = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
   const { id } = req.params;
-  const user = await userModel.findById(id).populate("videos");
+  const user = await userModel.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
 
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User Not Found." });

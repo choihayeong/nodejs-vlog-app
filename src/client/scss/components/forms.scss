@@ -1,0 +1,40 @@
+form {
+  max-width: 26.25rem;
+  margin-inline: auto;
+
+  &:not(.search__form) {
+    padding: 1.875rem;
+    background-color: rgba($color: #fff, $alpha: 0.7);
+    border: 1px solid rgba($color: #ccc, $alpha: 0.5);
+    border-radius: 0.625rem;
+  }
+}
+
+input {
+  all: unset;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #666;
+  background-color: #fff;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #222;
+  width: 90%;
+
+  &::placeholder {
+    color: #aaa;
+  }
+}
+
+input[type="submit"],
+.social__btn {
+  display: block;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  color: #fff;
+  border-color: $point--color;
+  background-color: $point--color;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}

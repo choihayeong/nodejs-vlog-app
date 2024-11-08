@@ -2,7 +2,12 @@ extends base
 include mixins/video
 
 block content 
-  each item in videos 
-    +video(item)
-  else 
-    div Sorry, nothing found.
+  if videos.length !== 0
+    ul.videolist
+      li
+        each item in videos 
+          +video(item)
+    
+  else
+    div.nodata 
+      p ❗Sorry, nothing found.

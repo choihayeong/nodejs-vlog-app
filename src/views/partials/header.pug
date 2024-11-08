@@ -1,26 +1,24 @@
-header
-    h1
+header.header
+    h1.header__logo
         a(href="/") 
             i.fab.fa-youtube
-            #{pageTitle}
         
-        nav 
-            ul 
+    nav 
+        ul.gnb 
+            li 
+                a(href="/search") 
+                    i.fas.fa-search 
+            if loggedIn
                 li 
-                    a(href="/") Home
+                    a(href="/videos/upload") Upload Video
+                li
+                    a(href=`/users/${loggedInUser._id}`) My Profile
                 li 
-                    a(href="/search") Search 
-                if loggedIn
-                    li 
-                        a(href="/videos/upload") Upload Video
-                    li
-                        a(href=`/users/${loggedInUser._id}`) My Profile
-                    li 
-                        a(href="/users/edit") Edit #{loggedInUser.user_name}의 프로필 
-                    li 
-                        a(href="/logout") Log out
-                else 
-                    li 
-                        a(href="/join") Join 
-                    li 
-                        a(href="/login") Login 
+                    a(href="/users/edit") Edit #{loggedInUser.user_name}의 프로필 
+                li 
+                    a(href="/logout") Log out
+            else 
+                li 
+                    a(href="/login") Login 
+                li 
+                    a(href="/join").header__btn Join 

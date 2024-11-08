@@ -2,7 +2,10 @@ import userModel from "../models/User";
 import videoModel from "../models/Video";
 
 export const home = async (req, res) => {
-  const videos = await videoModel.find({}).sort({ published_date: "desc" });
+  const videos = await videoModel
+    .find({})
+    .sort({ published_date: "desc" })
+    .populate("owner");
 
   return res.render("home", { pageTitle: "Home", videos });
 };
@@ -33,7 +36,7 @@ export const getEditVideo = async (req, res) => {
   }
 
   if (String(video.owner) !== _id) {
-    return res.satus(403).redirect("/");
+    return res.status(403).redirect("/");
   }
 
   return res.render("edit", {
@@ -55,7 +58,7 @@ export const postEditVideo = async (req, res) => {
   }
 
   if (String(video.owner) !== _id) {
-    return res.satus(403).redirect("/");
+    return res.status(403).redirect("/");
   }
 
   await videoModel.findByIdAndUpdate(id, {
@@ -79,7 +82,7 @@ export const deleteVideo = async (req, res) => {
   }
 
   if (String(video.owner) !== _id) {
-    return res.satus(403).redirect("/");
+    return res.status(403).redirect("/");
   }
 
   await videoModel.findByIdAndDelete(id);
@@ -93,11 +96,13 @@ export const searchVideo = async (req, res) => {
   let videos = [];
 
   if (keyword) {
-    videos = await videoModel.find({
-      vlog_title: {
-        $regex: new RegExp(`${keyword}$`, "i"),
-      },
-    });
+    videos = await videoModel
+      .find({
+        vlog_title: {
+          $regex: new RegExp(`${keyword}$`, "i"),
+        },
+      })
+      .populate("owner");
   }
 
   return res.render("search", { pageTitle: "Search Video", videos });

@@ -4,8 +4,15 @@
 
 // Components
 @import "./components/header";
+@import "./components/footer";
+@import "./components/forms";
+@import "./components/shared";
+@import "./components/video";
 
-// Screens
+// Views
+@import "./views/edit-profile";
+@import "./views/search";
+@import "./views/my-profile";
 
 // Defaults
 
@@ -28,4 +35,6 @@ body {
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
 }
