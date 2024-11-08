@@ -1,0 +1,26 @@
+header
+    h1
+        a(href="/") 
+            i.fab.fa-youtube
+            #{pageTitle}
+        
+        nav 
+            ul 
+                li 
+                    a(href="/") Home
+                li 
+                    a(href="/search") Search 
+                if loggedIn
+                    li 
+                        a(href="/videos/upload") Upload Video
+                    li
+                        a(href=`/users/${loggedInUser._id}`) My Profile
+                    li 
+                        a(href="/users/edit") Edit #{loggedInUser.user_name}의 프로필 
+                    li 
+                        a(href="/logout") Log out
+                else 
+                    li 
+                        a(href="/join") Join 
+                    li 
+                        a(href="/login") Login 
