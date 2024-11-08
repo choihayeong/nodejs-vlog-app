@@ -140,3 +140,36 @@ console.log("aaa");
 ```
 
 - 이후 `npm run build` 명령어를 실행하면 스타일 적용이 됨
+
+### MiniCssExtractPlugin
+
+- [docs](https://webpack.js.org/plugins/mini-css-extract-plugin/)
+
+```bash
+npm install --save-dev mini-css-extract-plugin
+```
+
+### `webpack.config.js` 개선
+
+> webpack이 실행될 때마다 nodemon이 재시작하는 것을 고쳐야 함
+
+- `nodemon.json` 파일 생성
+
+```json
+{
+  "ignore": ["webpack.config.js", "src/client/*", "assets/*"],
+  "exec": "babel-node src/init.js"
+}
+```
+
+- `package.json` 파일 `"scripts"` 속성 수정
+
+```json
+{
+  "scripts": {
+    "dev": "nodemon",
+    "build": "webpack",
+    "prepare": "husky"
+  }
+}
+```
