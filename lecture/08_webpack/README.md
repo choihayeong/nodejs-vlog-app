@@ -63,3 +63,80 @@ npm i babel-loader --save-dev
 ### `mode`
 
 - 기본값은 `"production"` 모드로 설정됨
+
+### rendering
+
+- `server.js`에서 다음과 같이 작성해줌
+
+```javascript
+app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
+app.use("/statics", express.static("statics")); // 추가
+// ...
+```
+
+```pug
+doctype html
+html(lang="ko")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{pageTitle} | #{siteName}
+    link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+  body
+    //- 하단 script 추가
+
+    script(src="/statics/js/main.js")
+```
+
+### scss
+
+- `/src/client/` 내에 `scss` 폴더 생성 후 `_variables.scss`, `style.scss` 파일 생성
+
+```scss
+// _variables.scss
+
+$point--color: #abcedc;
+```
+
+```scss
+// style.scss
+
+@import "./variables";
+
+body {
+  background-color: $point--color;
+}
+```
+
+- `sass-loader`, `sass`, `css-loader`, `style-loader` 패키지 설치
+
+```bash
+npm i sass-loader sass css-loader style-loader --save-dev
+```
+
+- `webpack.config.js` 파일에 다음과 같이 작성
+
+```js
+module.exports = {
+  //...
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+    ],
+  },
+};
+```
+
+- `/src/client/js/main.js`를 다음과 같이 작성
+
+```javascript
+import "../scss/style.scss";
+
+console.log("aaa");
+```
+
+- 이후 `npm run build` 명령어를 실행하면 스타일 적용이 됨
