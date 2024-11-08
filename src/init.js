@@ -3,7 +3,6 @@ import "dotenv/config";
 import "./db";
 import "./models/Video";
 import "./models/User";
-import "./models/Member";
 import app from "./server";
 
 const PORT = 3030;
