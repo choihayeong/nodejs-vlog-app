@@ -2,7 +2,12 @@ extends base
 
 block content 
   video(src=`/${video.file_url}`, controls, autoplay)
-
+  div 
+    button#play Play 
+    button#mute Mute 
+    span#time 00:00/00:00
+    input(type="range", step="0.2", min="0", max="1")#volume
+//-
   div 
     p=video.vlog_desc
     small=video.published_date 
@@ -17,3 +22,6 @@ block content
     a(href=`${video.id}/edit`) Edit Video &rarr;
     br
     a(href=`${video.id}/delete`) Delete Video &rarr;
+
+block scripts 
+  script(src="/statics/js/videoPlayer.js")

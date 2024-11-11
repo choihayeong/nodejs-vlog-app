@@ -10,7 +10,7 @@ form {
   }
 }
 
-input {
+input:not(input[type="range"]) {
   all: unset;
   padding: 1rem 1.25rem;
   border-radius: 0.5rem;
