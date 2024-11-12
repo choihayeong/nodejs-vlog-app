@@ -1,3 +1,5 @@
+const videoContainerEl = document.getElementById("videoContainer");
+const videoControllerEl = document.getElementById("videoController");
 const videoEl = document.querySelector("video");
 
 const playBtnEl = document.getElementById("play");
@@ -6,7 +8,10 @@ const volumeRangeEl = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const totalTimeEl = document.getElementById("totalTime");
 const timelineEl = document.getElementById("timeline");
+const fullScreenBtnEl = document.getElementById("fullScreen");
 
+let controllerTimeout = null;
+let controllerMovementTiemout = null;
 let initVolume = 0.5;
 videoEl.volume = initVolume;
 
@@ -68,6 +73,39 @@ const changeTimeLineController = (e) => {
   videoEl.currentTime = value;
 };
 
+const changeScreenStatus = () => {
+  const isFullScreen = document.fullscreenElement;
+
+  if (isFullScreen) {
+    document.exitFullscreen();
+    fullScreenBtnEl.innerText = "Enter Full Screen";
+  } else {
+    videoContainerEl.requestFullscreen();
+    fullScreenBtnEl.innerText = "Exit Full Screen";
+  }
+};
+
+const hideControllers = () => videoControllerEl.classList.remove("showing");
+
+const moveOnMouseVideo = () => {
+  if (controllerTimeout) {
+    clearTimeout(controllerTimeout);
+    controllerTimeout = null;
+  }
+  if (controllerMovementTiemout) {
+    clearTimeout(controllerMovementTiemout);
+    controllerMovementTiemout = null;
+  }
+
+  videoControllerEl.classList.add("showing");
+
+  controllerMovementTiemout = setTimeout(hideControllers, 3000);
+};
+
+const moveOutMouseVideo = () => {
+  setTimeout(hideControllers, 3000);
+};
+
 playBtnEl.addEventListener("click", clickPlayBtn);
 muteBtnEl.addEventListener("click", clickMuteBtn);
 videoEl.addEventListener("pause", handleVideoPause);
@@ -76,3 +114,6 @@ volumeRangeEl.addEventListener("input", changeVolumeController);
 videoEl.addEventListener("loadedmetadata", loadedMetaDataVideo);
 videoEl.addEventListener("timeupdate", timeUpdateVideo);
 timelineEl.addEventListener("input", changeTimeLineController);
+fullScreenBtnEl.addEventListener("click", changeScreenStatus);
+videoEl.addEventListener("mousemove", moveOnMouseVideo);
+videoEl.addEventListener("mouseleave", moveOutMouseVideo);
