@@ -3,12 +3,15 @@ const videoControllerEl = document.getElementById("videoController");
 const videoEl = document.querySelector("video");
 
 const playBtnEl = document.getElementById("play");
+const playBtnIcon = playBtnEl.querySelector("i");
 const muteBtnEl = document.getElementById("mute");
+const muteBtnIcon = muteBtnEl.querySelector("i");
 const volumeRangeEl = document.getElementById("volume");
 const currentTimeEl = document.getElementById("currentTime");
 const totalTimeEl = document.getElementById("totalTime");
 const timelineEl = document.getElementById("timeline");
 const fullScreenBtnEl = document.getElementById("fullScreen");
+const fullScreenIcon = fullScreenBtnEl.querySelector("i");
 
 let controllerTimeout = null;
 let controllerMovementTiemout = null;
@@ -22,7 +25,7 @@ const clickPlayBtn = (e) => {
     videoEl.pause();
   }
 
-  playBtnEl.innerText = videoEl.paused ? "Play" : "Pause";
+  playBtnIcon.classList = videoEl.paused ? "fas fa-play" : "fas fa-pause";
 };
 const handleVideoPause = () => (playBtnEl.innerText = "Play");
 const handleVideoPlay = () => (playBtnEl.innerText = "Pasue");
@@ -34,7 +37,9 @@ const clickMuteBtn = (e) => {
     videoEl.muted = true;
   }
 
-  muteBtnEl.innerText = videoEl.muted ? "Unmute" : "Mute";
+  muteBtnIcon.classList = videoEl.muted
+    ? "fas fa-volume-mute"
+    : "fas fa-volume-up";
   volumeRangeEl.value = videoEl.muted ? 0 : initVolume;
 };
 
@@ -78,10 +83,12 @@ const changeScreenStatus = () => {
 
   if (isFullScreen) {
     document.exitFullscreen();
-    fullScreenBtnEl.innerText = "Enter Full Screen";
+    // fullScreenBtnEl.innerText = "Enter Full Screen";
+    fullScreenIcon.classList = "fas fa-expand";
   } else {
     videoContainerEl.requestFullscreen();
-    fullScreenBtnEl.innerText = "Exit Full Screen";
+    // fullScreenBtnEl.innerText = "Exit Full Screen";
+    fullScreenIcon.classList = "fas fa-compress";
   }
 };
 
@@ -111,9 +118,9 @@ muteBtnEl.addEventListener("click", clickMuteBtn);
 videoEl.addEventListener("pause", handleVideoPause);
 videoEl.addEventListener("play", handleVideoPlay);
 volumeRangeEl.addEventListener("input", changeVolumeController);
-videoEl.addEventListener("loadedmetadata", loadedMetaDataVideo);
+videoEl.addEventListener("loadeddata", loadedMetaDataVideo);
 videoEl.addEventListener("timeupdate", timeUpdateVideo);
 timelineEl.addEventListener("input", changeTimeLineController);
 fullScreenBtnEl.addEventListener("click", changeScreenStatus);
-videoEl.addEventListener("mousemove", moveOnMouseVideo);
-videoEl.addEventListener("mouseleave", moveOutMouseVideo);
+videoContainerEl.addEventListener("mousemove", moveOnMouseVideo);
+videoContainerEl.addEventListener("mouseleave", moveOutMouseVideo);

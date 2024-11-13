@@ -4,8 +4,8 @@ include mixins/video
 block content 
   if videos.length !== 0
     ul.videolist
-      li
-        each item in videos 
+      each item in videos 
+        li
           +video(item)
     
   else

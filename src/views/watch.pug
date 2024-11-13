@@ -3,21 +3,22 @@ extends base
 block content 
   div#videoContainer.video-container
     video(src=`/${video.file_url}`, autoplay)
-    div#videoController.video-controller 
-      button#play Play 
-      button#mute Mute 
+    div#videoController.controller 
+      div.controller__play
+        span#play.controller__play-btn 
+          i.fas.fa-play 
+        div.controller__time
+          span#currentTime 00:00
+          span.split /
+          span#totalTime 00:00
+      input(type="range", step="1", value="0", min="0")#timeline.controller__timeline 
+      div.controller__volume
+        input(type="range", step="0.1", value="0.5", min="0", max="1")#volume
+        span#mute 
+          i.fas.fa-volume-up
       div 
-        span#currentTime 00:00 
-        span / 
-        span#totalTime 00:00
-      div 
-        label(for="volume") volume
-        input(type="range", step="0.2", value=0.5, min="0", max="1")#volume
-      div 
-        label(for="timeline") timeline
-        input(type="range", step="1", value=0, min="0")#timeline
-      div 
-        button#fullScreen Enter full screen
+        button#fullScreen 
+          i.fas.fa-expand
 //-
   div 
     p=video.vlog_desc
