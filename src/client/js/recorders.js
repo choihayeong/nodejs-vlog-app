@@ -3,13 +3,20 @@ const previewEl = document.getElementById("preview");
 
 let stream;
 let recorder;
+let audioFile;
 
-const downloadData = () => {};
+const downloadData = () => {
+  const anchor = document.createElement("a");
+  anchor.href = audioFile;
+  anchor.download = "MyRecording.webm";
+  document.body.appendChild(anchor);
+  anchor.click();
+};
 
 const stopRecord = () => {
   recordBtnEl.innerText = "Download Recording";
   recordBtnEl.removeEventListener("click", stopRecord);
-  recordBtnEl.addEventListener("click", startRecord);
+  recordBtnEl.addEventListener("click", downloadData);
 
   recorder.stop();
 };
@@ -19,9 +26,9 @@ const startRecord = () => {
   recordBtnEl.removeEventListener("click", startRecord);
   recordBtnEl.addEventListener("click", stopRecord);
 
-  recorder = new MediaRecorder(stream);
+  recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
   recorder.ondataavailable = (event) => {
-    const audioFile = URL.createObjectURL(event.data);
+    audioFile = URL.createObjectURL(event.data);
     previewEl.srcObject = null;
     previewEl.src = audioFile;
     previewEl.loop = true;

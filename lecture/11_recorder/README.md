@@ -180,3 +180,9 @@ const startRecord = () => {
   }, 10000);
 };
 ```
+
+## Rendering Recorded Data (Video/Audio)
+
+- 비디오 녹화가 안되므로 오디오로 대체함 😂
+
+## Download Data Files (Video/Audio)
