@@ -13,6 +13,8 @@ const timelineEl = document.getElementById("timeline");
 const fullScreenBtnEl = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtnEl.querySelector("i");
 
+const inputVideoId = document.getElementById("videoId");
+
 let controllerTimeout = null;
 let controllerMovementTiemout = null;
 let initVolume = 0.5;
@@ -117,6 +119,14 @@ const moveOutMouseVideo = () => {
   setTimeout(hideControllers, 3000);
 };
 
+const endedVideo = () => {
+  const api_id = inputVideoId.value;
+
+  fetch(`/api/videos/${api_id}/view`, {
+    method: "POST",
+  });
+};
+
 playBtnEl.addEventListener("click", clickPlayBtn);
 muteBtnEl.addEventListener("click", clickMuteBtn);
 videoEl.addEventListener("pause", handleVideoPause);
@@ -124,6 +134,7 @@ videoEl.addEventListener("play", handleVideoPlay);
 volumeRangeEl.addEventListener("input", changeVolumeController);
 videoEl.addEventListener("loadeddata", loadedMetaDataVideo);
 videoEl.addEventListener("timeupdate", timeUpdateVideo);
+videoEl.addEventListener("ended", endedVideo);
 timelineEl.addEventListener("input", changeTimeLineController);
 fullScreenBtnEl.addEventListener("click", changeScreenStatus);
 videoContainerEl.addEventListener("mousemove", moveOnMouseVideo);
