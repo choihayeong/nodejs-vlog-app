@@ -18,6 +18,7 @@ let controllerMovementTiemout = null;
 let initVolume = 0.5;
 videoEl.volume = initVolume;
 
+// MARK: 플레이 버튼
 const clickPlayBtn = (e) => {
   if (videoEl.paused) {
     videoEl.play();
@@ -27,9 +28,10 @@ const clickPlayBtn = (e) => {
 
   playBtnIcon.classList = videoEl.paused ? "fas fa-play" : "fas fa-pause";
 };
-const handleVideoPause = () => (playBtnEl.innerText = "Play");
-const handleVideoPlay = () => (playBtnEl.innerText = "Pasue");
+const handleVideoPause = () => (playBtnIcon.classList = "fas fa-play");
+const handleVideoPlay = () => (playBtnIcon.classList = "fas fa-pause");
 
+// MARK: 뮤트 버튼
 const clickMuteBtn = (e) => {
   if (videoEl.muted) {
     videoEl.muted = false;
@@ -43,6 +45,7 @@ const clickMuteBtn = (e) => {
   volumeRangeEl.value = videoEl.muted ? 0 : initVolume;
 };
 
+// MARK: 볼륨조절 버튼
 const changeVolumeController = (e) => {
   const {
     target: { value },
@@ -57,6 +60,7 @@ const changeVolumeController = (e) => {
   videoEl.volume = value;
 };
 
+// MARK: 타이머 포맷
 const formatTimer = (seconds) =>
   new Date(seconds * 1000).toISOString().substring(11, 19); // 야매 방법임 ㅋ
 
@@ -70,6 +74,7 @@ const timeUpdateVideo = () => {
   timelineEl.value = Math.floor(videoEl.currentTime);
 };
 
+// MARK: 비디오 타임라인
 const changeTimeLineController = (e) => {
   const {
     target: { value },
@@ -78,16 +83,15 @@ const changeTimeLineController = (e) => {
   videoEl.currentTime = value;
 };
 
+// MARK: 전체화면
 const changeScreenStatus = () => {
   const isFullScreen = document.fullscreenElement;
 
   if (isFullScreen) {
     document.exitFullscreen();
-    // fullScreenBtnEl.innerText = "Enter Full Screen";
     fullScreenIcon.classList = "fas fa-expand";
   } else {
     videoContainerEl.requestFullscreen();
-    // fullScreenBtnEl.innerText = "Exit Full Screen";
     fullScreenIcon.classList = "fas fa-compress";
   }
 };
