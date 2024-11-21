@@ -186,3 +186,7 @@ const startRecord = () => {
 - 비디오 녹화가 안되므로 오디오로 대체함 😂
 
 ## Download Data Files (Video/Audio)
+
+#### 참고 링크
+
+- [A sample application: Web Dictaphone](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API)

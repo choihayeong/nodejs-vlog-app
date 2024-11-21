@@ -42,11 +42,17 @@ const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
     video: false,
+    /**
+     * 비디오 사용시 주석 해제
+     */
     // video: { width: 200, height: 100 },
   });
 
   previewEl.srcObject = stream;
-  previewEl.play();
+  /**
+   * 비디오 사용시 주석 해제
+   */
+  // previewEl.play();
 };
 
 init();
