@@ -1,22 +1,24 @@
 extends base
 
 block content 
-	div 
-		//- video#preview
-		audio(controls)#preview
-		button#actionBtn Start Record
+	div.upload
+		div.upload__container
+			div.upload__video
+				//- video#preview
+				audio(controls)#preview
+				button#actionBtn.social__btn Start Record
 
-	if errorMessage
-		p=errorMessage
-	form(method="post", enctype="multipart/form-data") 
-		label(for="vlog_video") Video File 
-		input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required)
-		label(for="vlog_thumbnail") Thumbnail File 
-		input(type="file", id="vlog_thumbnail", name="vlog_thumbnail", accept="image/*", required)
-		input(type="text", name="vlog_title", maxlength=80, placeholder="title", required)
-		input(type="text", name="vlog_desc", minlength=30, placeholder="description", required)
-		input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", required)
-		input(type="submit", value="Upload")
+			if errorMessage
+				p=errorMessage
+			form(method="post", enctype="multipart/form-data") 
+				label(for="vlog_video") Video File 
+				input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required)
+				label(for="vlog_thumbnail") Thumbnail File 
+				input(type="file", id="vlog_thumbnail", name="vlog_thumbnail", accept="image/*", required)
+				input(type="text", name="vlog_title", maxlength=80, placeholder="title", required)
+				input(type="text", name="vlog_desc", minlength=30, placeholder="description", required)
+				input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", required)
+				input(type="submit", value="Upload")
 
 block scripts 
 	script(src="/statics/js/recorders.js") 
