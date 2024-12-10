@@ -14,7 +14,7 @@ npm install @ffmpeg/ffmpeg @ffmpeg/core
 
 - `/src/client/js/recorder.js` 에 임포트 후 `downloadData` 함수에 다음과 같이 작성
 
-    * [FFmpeg Usage](https://ffmpegwasm.netlify.app/docs/getting-started/usage)
+  * [FFmpeg Usage](https://ffmpegwasm.netlify.app/docs/getting-started/usage)
 
 ```javascript
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
@@ -126,5 +126,181 @@ const downloadData = async() => {
   URL.revokeObjectURL(mp4Url);
   URL.revokeObjectURL(thumnailUrl);
   URL.revokeObjectURL(videoFile);
+};
+```
+
+## Refactor
+
+- `/src/client/js/recorders.js`에서 `const files: {}` 로 정리
+
+```javascript
+const files = {
+  input: "recording.webm",
+  output: "ouput.mp4",
+  thumbnail: "thumbnail.jpg"
+};
+
+const downloadData = async() => {
+  //...
+
+  ffmpeg.FS("writeFile", files.input, await fetchFile(videoFile));
+  await ffmpeg.run("-i", files.input, "-r", "60", files.output);
+  await ffmpeg.run("-i", files.input, "-ss", "00:00:01", "-frames:v", "1", files.thumbnail);
+
+  const mp4File = ffmpeg.FS("readFile", files.output);
+  const thumnailFile = ffmpeg.FS("readFile", files.thumbnail);
+
+  //...
+
+  ffmpeg.FS("unlink", files.input);
+  ffmpeg.FS("unlink", files.output);
+  ffmpeg.FS("unlink", files.thumbnail);
+
+  //...
+}
+
+```
+
+- `<a>` 태그 다운로드 부분 정리 (주석 부분 삭제 후 `downloadfile` 함수로 정리)
+
+```javascript
+/**
+ * @param {String} fileUrl 
+ * @param {String} fileName 
+ */
+const downloadfile = (fileUrl, fileName) => {
+  const a = document.createElement("a");
+  a.href = fileUrl;
+  a.download = fileName;
+  document.body.append(a);
+  a.click();
+};
+
+const downloadData = async() => {
+  /*const anchor = document.createElement("a");
+  anchor.href = mp4Url;
+  anchor.download = "MyRecording.mp4"; // MyRecording.webm 의 확장자를 mp4로 변경
+  document.body.appendChild(anchor);
+  anchor.click();
+
+  const thumbnailAnchor = document.createElement("a");
+  thumbnailAnchor.href = thumnailUrl;
+  thumbnailAnchor.download = "VideoThumbnail.jpg";
+  document.body.appendChild(thumbnailAnchor);
+  thumbnailAnchor.click(); */
+
+  downloadfile(mp4Url, "MyRecording.mp4");
+  downloadfile(thumnailUrl, "VideoThumbnail.jpg");
+}
+```
+
+- `recordBtn` 을 `actionBtn` 으로 변경
+
+```pug
+//- /src/views/upload.pug
+extends base
+
+block content 
+	div 
+		//- video#preview
+		audio(controls)#preview
+		button#actionBtn Start Record
+
+```
+
+```javascript
+const actionBtnEl = document.getElementById("actionBtn");
+
+const downloadData = async() => {
+  actionBtnEl.removeEventListener("click", downloadData);
+
+  actionBtnEl.innerText = "Transcoding....";
+  actionBtnEl.disabled = true;
+
+  //...
+
+  actionBtnEl.disabled = false;
+  actionBtnEl.innerText = "Record Again";
+  actionBtnEl.addEventListener("click", downloadData);
+};
+
+const stopRecord = () => {
+  actionBtnEl.innerText = "Download Recording";
+  actionBtnEl.removeEventListener("click", stopRecord);
+  actionBtnEl.addEventListener("click", downloadData);
+
+  recorder.stop();
+};
+
+const startRecord = () => {
+  actionBtnEl.innerText = "Stop Recording";
+  actionBtnEl.removeEventListener("click", startRecord);
+  actionBtnEl.addEventListener("click", stopRecord);
+};
+
+actionBtnEl.addEventListener("click", startRecord);
+```
+
+## Thumbnail
+
+- `/src/models/Video.js` 에서 `thumnail_url` 속성 추가
+
+```javascript
+const videoSchema = new mongoose.Schema({
+  // ... 
+  thumbnail_url: { type: String, required: true }, // 추가
+  // ... 
+});
+```
+
+- `/src/views/upload.pug` 에서 thumbnail 업로드 하는 부분 추가
+
+```pug
+extends base
+
+block content 
+  form(method="post", enctype="multipart/form-data") 
+    label(for="vlog_video") Video File 
+		input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required)
+    //- 추가
+		label(for="vlog_thumbnail") Thumbnail File 
+		input(type="file", id="vlog_thumbnail", name="vlog_thumbnail", accept="image/*", required)
+```
+
+
+- `/src/routers/videoRouter.js` 에서 `/upload` 부분을 개선
+
+  * video, thumnbnail 파일 2개를 올려야 하기 때문에 `middleware`에서 불러오는 `videoUpload`를 `single`에서 `fields`로 바꿔 줌
+
+  ```javascript
+  videoRouter
+    .route("/upload")
+    .all(protectorMiddleware)
+    .get(getUploadVideo)
+    .post(videoUpload.fields([
+      {name: "vlog_video", maxCount: 1}, 
+      {name: "vlog_thumbnail", maxCount: 1}
+    ]), postUploadVideo);
+  ```
+
+- `/src/controller/videoController.js` 에서 `postUploadVideo` 부분 개선
+
+```javascript
+export const postUploadVideo = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
+  const { vlog_video, vlog_thumbnail } = req.files; // 원래 const { path: file_url } = req.file 을 변경
+
+  try {
+    const newVideo = await videoModel.create({
+      // ...
+      file_url: vlog_video[0].path, // 추가
+      thumbnail_url: vlog_thumbnail[0].path, // 추가
+      // ...
+    });
+  } catch(err) {
+    //...
+  }
 };
 ```
