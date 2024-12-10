@@ -1,6 +1,6 @@
 mixin video(video)
     a(href=`/videos/${video._id}`).video-item
-        div.video-item__thumbnail
+        div.video-item__thumbnail(style=`background-image: url(${video.thumbnail_url}); background-size: cover; background-position: center`)
         div.video-item__data
             span.video-item__title=video.vlog_title
             div.video-item__meta

@@ -119,6 +119,7 @@ const moveOutMouseVideo = () => {
   setTimeout(hideControllers, 3000);
 };
 
+// MARK: 조회수 체크
 const endedVideo = () => {
   const api_id = inputVideoId.value;
 
