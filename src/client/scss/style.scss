@@ -41,3 +41,31 @@ body {
   font-size: 1.125rem;
   line-height: 1.5;
 }
+
+.message {
+  position: absolute;
+  top: 0.625rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  animation: toast 0.5s ease-out 5s forwards;
+
+  &.error {
+    background-color: tomato;
+    color: #fff;
+  }
+}
+
+@keyframes toast {
+  from {
+    transform: none;
+    opacity: 1;
+  }
+  to {
+    transform: translateY(3rem);
+    opacity: 0;
+  }
+}

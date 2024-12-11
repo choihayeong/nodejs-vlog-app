@@ -5,3 +5,5 @@
 ```bash
 npm i express-flash
 ```
+
+- toast 메시지 처럼 사용하면 좋을 듯
