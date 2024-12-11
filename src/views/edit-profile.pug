@@ -1,14 +1,28 @@
 extends base
 
 block content 
-    form(method="POST", enctype="multipart/form-data").edit-profile__form 
-        label(for="user_avatar") Avatar
-        input(type="file", id="user_avatar", name="user_avatar", accept="image/*")
-        input(type="email", name="user_email", placeholder="your email", value=loggedInUser.user_email, required) 
-        input(type="text", name="user_name", placeholder="your unique name", value=loggedInUser.user_name, required) 
-        input(type="text", name="user_location", placeholder="your location (optional)", value=loggedInUser.user_location) 
-        input(type="submit" value="Update")  
+    section.section
+        h2.section__title Edit Profile
+        
+        div.edit-profile
+            figure.avatar 
+                img(src=`/${loggedInUser.avatar_url}`, alt="")
 
-        if !loggedInUser.social_only
-            div.edit-profile__password
-                a(href="change-password") Change Password &rarr; 
+            form(method="POST", enctype="multipart/form-data").form.form--eidt-profile
+                div.form__item
+                    label(for="user_avatar") Avatar
+                    input(type="file", id="user_avatar", name="user_avatar", accept="image/*").ipt.ipt--file
+                div.form__item.required
+                    label(for="user_email") 이메일(e-mail)
+                    input(type="email", id="user_email", name="user_email", placeholder="your email", value=loggedInUser.user_email, required).ipt 
+                div.form__item.required
+                    label(for="user_name") 유저이름(user name)
+                    input(type="text", id="user_name", name="user_name", placeholder="your unique name", value=loggedInUser.user_name, required).ipt 
+                div.form__item
+                    label(for="user_location") 거주지(location)
+                    input(type="text", id="user_location", name="user_location", placeholder="your location (optional)", value=loggedInUser.user_location).ipt 
+                input(type="submit" value="Update").ipt.ipt--submit  
+
+                if !loggedInUser.social_only
+                    div.edit-profile__password
+                        a(href="change-password") Change Password &rarr; 
