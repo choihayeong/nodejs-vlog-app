@@ -2,17 +2,25 @@ extends base
 include mixins/video
 
 block content 
-    form(method="get").search__form
-        input(type="text", name="keyword", placeholder="Search By title") 
-        button 
-            i.fas.fa-search
-    
-    if videos.length !== 0
-        ul.videolist
-            li
-                each video in videos 
-                    +video(video)
-    else 
-        div.no-data
-            p No videos Found.
+    section.section.section--search 
+        h2.section__title Search 
+
+        form(method="get").form.form--search
+            input(type="text", name="keyword", placeholder="검색어를 입력하세요(Search By title)").ipt 
+            button 
+                i.fas.fa-search
+        
+        if keyword
+            div.search-result 
+                p.search-result__message  
+                    strong "#{keyword}"
+                    |의 검색 결과
+                if videos.length !== 0
+                    ul.videolist
+                        li
+                            each video in videos 
+                                +video(video)
+                else 
+                    div.no-data
+                        p No videos Found 👾
             

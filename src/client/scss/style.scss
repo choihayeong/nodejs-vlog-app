@@ -66,6 +66,19 @@ body {
   margin-inline: auto;
 }
 
+.section {
+  padding-top: 1.5rem;
+  padding-bottom: 4.125rem;
+
+  &__title {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+  }
+}
+
 .message {
   position: absolute;
   top: 0.625rem;

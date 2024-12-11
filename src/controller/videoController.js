@@ -96,6 +96,8 @@ export const deleteVideo = async (req, res) => {
 export const searchVideo = async (req, res) => {
   const { keyword } = req.query;
 
+  console.log(req.query);
+
   let videos = [];
 
   if (keyword) {
@@ -108,7 +110,7 @@ export const searchVideo = async (req, res) => {
       .populate("owner");
   }
 
-  return res.render("search", { pageTitle: "Search Video", videos });
+  return res.render("search", { pageTitle: "Search Video", videos, keyword });
 };
 
 export const getUploadVideo = (req, res) =>

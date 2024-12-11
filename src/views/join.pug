@@ -1,18 +1,31 @@
 extends base
 
 block content 
-    if errorMessage
-        span=errorMessage
-    form(method="post")
-        input(type="email", name="user_email", placeholder="your email", required) 
-        input(type="text", name="user_name", placeholder="your unique name", required) 
-        input(type="password", name="user_password", placeholder="your password", required) 
-        input(type="password", name="confirm_password", placeholder="Confirm your password", required) 
-        input(type="text", placeholder="your location (optional)", name="user_location") 
-        input(type="submit" value="Join")  
+    section.section.section--join 
+        h2.section__title Join Us!
 
-        include partials/social-login
+        if errorMessage
+            span=errorMessage
+        form(method="post").form
+            div.form__item.required 
+                label(for="user_email") 이메일(e-mail)
+                input(type="email", id="user_email", name="user_email", placeholder="your_email@host.com", required).ipt 
+            div.form__item.required
+                label(for="user_name") 유저이름(user name)
+                input(type="text", id="user_name", name="user_name", placeholder="다른 유저와 중복되지 않는 이름(your unique name)", required).ipt 
+            div.form__item.required
+                label(for="user_password") 비밀번호(password)
+                input(type="password", id="user_password", name="user_password", placeholder="your password", required).ipt 
+            div.form__item.required
+                label(for="confirm_password") 비밀번호 확인(cofirm password)
+                input(type="password", id="confirm_password", name="confirm_password", placeholder="Confirm your password", required).ipt 
+            div.form__item
+                label(for="user_location") 거주지(location)
+                input(type="text", id="user_location", name="user_location", placeholder="your location (optional)").ipt 
+            input(type="submit" value="Join").ipt.ipt--submit  
 
-    div.auth-switch
-        span Already have an Account?
-        a(href="/login") Log in Now &rarr;
+            include partials/social-login
+
+        div.auth-switch
+            span Already have an Account?
+            a(href="/login") Log in Now &rarr;
