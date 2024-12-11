@@ -2,12 +2,14 @@ extends base
 include mixins/video
 
 block content 
-  if videos.length !== 0
-    ul.videolist
-      each item in videos 
-        li
-          +video(item)
-    
-  else
-    div.nodata 
-      p ❗Sorry, nothing found.
+  section.section.section--home 
+    h2.section__title.blind Trending
+    if videos.length !== 0
+      ul.videolist.videolist--home
+        each item in videos 
+          li
+            +video(item)
+      
+    else
+      div.nodata 
+        p ❗Sorry, nothing found.

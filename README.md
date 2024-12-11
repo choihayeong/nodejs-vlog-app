@@ -2,11 +2,11 @@
 
 nodejs-vlog-app built using node.js, express, no-sql based database(mongoDB) and ES6
 
-## 📝 Note List
+### 📝 Note List
 
 - [Wiki](https://github.com/choihayeong/nodejs-vlog-app/wiki)
 
-## 의존 패키지 (`package.json`)
+### 의존 패키지 (`package.json`)
 
 ```json
 {
@@ -40,8 +40,19 @@ nodejs-vlog-app built using node.js, express, no-sql based database(mongoDB) and
     "style-loader": "^4.0.0",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4"
-  },
+  }
 }
+```
+
+### `npm run dev` 시작 전
+
+- `.env` 파일 생성
+
+```
+COOKIE_SECRET=ejfowjofw
+DB_URL=mongodb://127.0.0.1:27017/...
+GH_CLIENT=
+GH_SECRET=
 ```
 
 ### Design for domain url
@@ -52,18 +63,14 @@ nodejs-vlog-app built using node.js, express, no-sql based database(mongoDB) and
 /login -> 로그인
 /search -> 검색
 
-/users/join
-/users/login
-/users/logout
 /users/:id -> See User
 /users/edit -> Edit My Profile
-/users/delete -> Delete My Profile
+[wip] /users/delete -> Delete User
 
-/videos/search
+/videos/upload -> Upload Video
 /videos/:id -> See video
 /videos/:id/edit -> Edit Video
 /videos/:id/delete -> Delete Video
-/videos/upload -> Upload Video
 
 /videos/comments
 /videos/comments/delete

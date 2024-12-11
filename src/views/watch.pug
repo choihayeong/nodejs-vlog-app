@@ -20,6 +20,14 @@ block content
       div 
         button#fullScreen 
           i.fas.fa-expand
+
+  hr
+
+  if String(video.owner._id) === String(loggedInUser._id)
+    a(href=`${video.id}/edit`) Edit Video &rarr;
+    br
+    a(href=`${video.id}/delete`) Delete Video &rarr;
+
 //-
   div 
     p=video.vlog_desc
@@ -28,13 +36,6 @@ block content
   div 
     small Uploaded By 
       a(href=`/users/${video.owner._id}`) #{video.owner.user_name}
-    
-  hr
-
-  if String(video.owner._id) === String(loggedInUser._id)
-    a(href=`${video.id}/edit`) Edit Video &rarr;
-    br
-    a(href=`${video.id}/delete`) Delete Video &rarr;
 
 block scripts 
   script(src="/statics/js/videoPlayer.js")

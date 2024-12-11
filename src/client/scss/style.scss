@@ -7,7 +7,6 @@
 @import "./components/footer";
 @import "./components/forms";
 @import "./components/shared";
-@import "./components/video";
 @import "./components/video-player";
 
 // Views
@@ -24,6 +23,25 @@ a {
   text-decoration: none;
 }
 
+button {
+  background: transparent;
+  border: 0 none;
+  color: inherit;
+  font: inherit;
+}
+
+.blind {
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  font-size: 0;
+  line-height: 0;
+  visibility: hidden;
+}
+
 body {
   background-color: $bg--color;
   font-family:
@@ -38,8 +56,14 @@ body {
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  color: #fff;
   font-size: 1.125rem;
   line-height: 1.5;
+}
+
+.wrap {
+  max-width: 48.75rem;
+  margin-inline: auto;
 }
 
 .message {
