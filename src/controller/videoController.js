@@ -35,6 +35,8 @@ export const getEditVideo = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
   }
 
+  console.log(video);
+
   if (String(video.owner) !== _id) {
     req.flash("error", "You are not the owner of this video");
 
@@ -48,28 +50,35 @@ export const getEditVideo = async (req, res) => {
 };
 
 export const postEditVideo = async (req, res) => {
-  const { id } = req.params;
   const {
     user: { _id },
   } = req.session;
-  const video = await videoModel.exists({ _id: id });
+  const { id } = req.params;
   const { vlog_title, vlog_desc, hashtags } = req.body;
+  const video = await videoModel.exists({ _id: id });
 
-  if (!video) {
-    return res.status(404).render("404", { pageTitle: "404 Not Found" });
-  }
-
-  if (String(video.owner) !== _id) {
-    return res.status(403).redirect("/");
-  }
-
-  await videoModel.findByIdAndUpdate(id, {
+  const videoModified = await videoModel.findByIdAndUpdate(id, {
     vlog_title,
     vlog_desc,
     hashtags: videoModel.formatHashtags(hashtags),
   });
 
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "404 Not Found" });
+  }
+
+  if (String(videoModified.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
+
+  // await videoModel.findByIdAndUpdate(id, {
+  //   vlog_title,
+  //   vlog_desc,
+  //   hashtags: videoModel.formatHashtags(hashtags),
+  // });
+
   req.flash("success", "Changes saved.");
+
   return res.redirect(`/videos/${id}`);
 };
 

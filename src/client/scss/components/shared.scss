@@ -96,7 +96,9 @@
   }
 }
 
-.nodata {
-  margin-bottom: 3.125rem;
-  font-size: 1.125rem;
+.no-data {
+  padding-block: 5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
 }

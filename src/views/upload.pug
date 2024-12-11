@@ -1,24 +1,34 @@
 extends base
 
 block content 
-	div.upload
-		div.upload__container
-			div.upload__video
-				//- video#preview
-				audio(controls)#preview
-				button#actionBtn.social__btn Start Record
+	section.section.section--upload
+		h2.section__title Upload Vlog
+		div.upload
+			div.upload__container
+				div.upload__video
+					//- video#preview
+					audio(controls)#preview
+					button#actionBtn.social__btn Start Record
 
-			if errorMessage
-				p=errorMessage
-			form(method="post", enctype="multipart/form-data") 
-				label(for="vlog_video") Video File 
-				input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required)
-				label(for="vlog_thumbnail") Thumbnail File 
-				input(type="file", id="vlog_thumbnail", name="vlog_thumbnail", accept="image/*", required)
-				input(type="text", name="vlog_title", maxlength=80, placeholder="title", required)
-				input(type="text", name="vlog_desc", minlength=30, placeholder="description", required)
-				input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", required)
-				input(type="submit", value="Upload")
+				if errorMessage
+					p=errorMessage
+				form(method="post", enctype="multipart/form-data").form.form--upload 
+					div.form__item.required
+						label(for="vlog_video") 비디오 파일(Video File) 
+						input(type="file", id="vlog_video", name="vlog_video", accept="video/*", required).ipt.ipt--file
+					div.form__item
+						label(for="vlog_thumbnail") 썸네일 파일(Thumbnail File) 
+						input(type="file", id="vlog_thumbnail", name="vlog_thumbnail", accept="image/*", required).ipt.ipt--file
+					div.form__item.required
+						label(for="vlog_title") Vlog 제목 (Vlog Title) 
+						input(type="text", id="vlog_title", name="vlog_title", maxlength=80, placeholder="title", required).ipt
+					div.form__item.required
+						label(for="vlog__desc") Vlog 내용 (Vlog Description) 
+						input(type="text", id="vlog__desc", name="vlog_desc", minlength=10, placeholder="description", required).ipt
+					div.form__item
+						label(for="hashtags") 해시태그 (","로 분리해서 작성)
+						input(type="text", id="hashtags", name="hashtags", placeholder="Hashtags, seperated by comma.", required).ipt
+					input(type="submit", value="Upload").ipt.ipt--submit
 
 block scripts 
 	script(src="/statics/js/recorders.js") 

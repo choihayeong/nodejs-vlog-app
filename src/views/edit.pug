@@ -1,9 +1,19 @@
 extends base.pug
 
 block content
-  h4 Change Title of Video
-  form(method="POST") 
-    input(type="text", name="vlog_title", placeholder="Video Title", value=video.vlog_title, required)
-    input(type="text", name="vlog_desc", minlength=30, placeholder="description", value=video.vlog_desc, required)
-    input(type="text", name="hashtags", placeholder="Hashtags, seperated by comma.", value=video.hashtags.join(), required)
-    input(value="Save", type="submit")
+  section.section.section--edit
+    h2.section__title Edit Vlog
+      br
+      small=video.vlog_title 
+
+    form(method="POST").form.form--edit 
+      div.form__item.required
+        label(for="vlog_title") Vlog 제목(vlog title)
+        input(type="text", id="vlog_title", name="vlog_title", placeholder="Video Title", value=video.vlog_title, required).ipt
+      div.form__item.required
+        label(for="vlog_desc") Vlog 내용(vlog description) 
+        input(type="text", id="vlog_desc", name="vlog_desc", minlength=10, placeholder="description", value=video.vlog_desc, required).ipt
+      div.form__item
+        label(for="hashtags") 해시태그 (","로 분리해서 작성)
+        input(type="text", id="hashtags", name="hashtags", placeholder="Hashtags, seperated by comma.", value=video.hashtags.join(), required).ipt
+      input(value="Save", type="submit").ipt.ipt--submit
