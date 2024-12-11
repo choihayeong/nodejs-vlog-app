@@ -2,16 +2,20 @@ extends ../base
 include ../mixins/video
 
 block content 
-    div.profile-data
-        img(src=`/${user.avatar_url}`, alt="").avatar
+    section.section.section--myprofile
+        h2.section__title.blind #{user.user_name} Profile 
 
-        h3=user.user_name 
+        div.my-profile
+            figure.avatar 
+                img(src=`/${user.avatar_url}`, alt="")
+            
+            p.my-profile__name=user.user_name
 
-        if user.videos.length !== 0
-            ul.videolist 
-                li 
+            if user.videos.length !== 0
+                ul.videolist 
                     each video in user.videos 
-                        +video(video)
-        else
-            div.no-data 
-                p Sorry nothing found.
+                        li 
+                            +video(video)
+            else
+                div.no-data 
+                    p Sorry nothing found.

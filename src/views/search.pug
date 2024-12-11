@@ -16,7 +16,7 @@ block content
                     strong "#{keyword}"
                     |의 검색 결과
                 if videos.length !== 0
-                    ul.videolist
+                    ul.videolist.videolist--search
                         li
                             each video in videos 
                                 +video(video)

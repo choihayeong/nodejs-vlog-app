@@ -30,6 +30,10 @@ button {
   font: inherit;
 }
 
+img {
+  vertical-align: top;
+}
+
 .blind {
   position: absolute;
   overflow: hidden;
@@ -79,6 +83,7 @@ body {
   }
 }
 
+// toast ui (flash message)
 .message {
   position: absolute;
   top: 0.625rem;
