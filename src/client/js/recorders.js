@@ -1,4 +1,3 @@
-// const recordBtnEl = document.getElementById("recordBtn");
 const actionBtnEl = document.getElementById("actionBtn");
 const previewEl = document.getElementById("preview");
 
@@ -6,23 +5,23 @@ let stream;
 let recorder;
 let audioFile;
 
-/* const downloadData = () => {
+const downloadData = () => {
   const anchor = document.createElement("a");
   anchor.href = audioFile;
   anchor.download = "MyRecording.webm";
   document.body.appendChild(anchor);
   anchor.click();
-}; */
+};
 
 const files = {
   input: "recording.webm",
   output: "ouput.mp4",
-  thumbnail: "thumbnail.jpg"
+  thumbnail: "thumbnail.jpg",
 };
 
 /**
- * @param {String} fileUrl 
- * @param {String} fileName 
+ * @param {String} fileUrl
+ * @param {String} fileName
  */
 const downloadfile = (fileUrl, fileName) => {
   const a = document.createElement("a");
@@ -32,7 +31,7 @@ const downloadfile = (fileUrl, fileName) => {
   a.click();
 };
 
-const downloadData = async() => {
+/* const downloadData = async() => {
 
   actionBtnEl.removeEventListener("click", downloadData);
 
@@ -67,7 +66,7 @@ const downloadData = async() => {
   actionBtnEl.disabled = false;
   actionBtnEl.innerText = "Record Again";
   actionBtnEl.addEventListener("click", downloadData);
-};
+}; */
 
 const stopRecord = () => {
   actionBtnEl.innerText = "Download Recording";
@@ -101,7 +100,7 @@ const init = async () => {
     /**
      * 비디오 사용시 주석 해제
      */
-    // video: { width: 200, height: 100 },
+    // video: { width: 1024, height: 576 },
   });
 
   previewEl.srcObject = stream;
