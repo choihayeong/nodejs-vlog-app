@@ -1,4 +1,4 @@
-include mixins/message
+include mixins/messages
 
 doctype html
 html(lang="ko")
@@ -15,7 +15,7 @@ html(lang="ko")
       +message("info", messages.info)
     if messages.success 
       +message("success", messages.success)
-      
+
     include partials/header
   
     main 
