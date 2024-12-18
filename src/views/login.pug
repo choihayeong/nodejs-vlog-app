@@ -5,7 +5,9 @@ block content
         h2.section__title LOGIN 
 
         if errorMessage
-            span=errorMessage
+            div.alert
+                span ⚠️ #{errorMessage}
+
         form(method="post").form
             div.form__item
                 label(for="user_name") 유저이름(user name)
