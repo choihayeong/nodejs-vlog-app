@@ -1,6 +1,7 @@
 import userModel from "../models/User";
 import bcrypt from "bcrypt";
 
+// MARK: Join Account
 export const getJoin = (req, res) => res.render("join", { pageTitle: "join" });
 export const postJoin = async (req, res) => {
   const {
@@ -41,6 +42,7 @@ export const postJoin = async (req, res) => {
   return res.redirect("/login");
 };
 
+// MARK: Login Account
 export const getLogin = (req, res) =>
   res.render("login", { pageTitle: "Login" });
 
@@ -73,6 +75,7 @@ export const postLogin = async (req, res) => {
   res.redirect("/");
 };
 
+// MARK: Github Login
 export const startGithubLogin = (req, res) => {
   const BASE_URL = `https://github.com/login/oauth/authorize`;
   const config = {
@@ -160,6 +163,7 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
+// MARK: Logout
 export const logout = (req, res) => {
   req.session.destroy();
   // req.flash("info", "Bye Bye");
@@ -167,6 +171,7 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
+// MARK: UPDATE A User
 export const getEditUser = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
@@ -251,6 +256,7 @@ export const postEditUser = async (req, res) => {
   return res.redirect("/users/edit");
 };
 
+// MARK: Change Password
 export const getChangePassword = (req, res) => {
   if (req.session.user.social_only) {
     req.flash("error", "Can't change password.");
@@ -296,6 +302,7 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/");
 };
 
+// MARK: READ A User
 export const getUserProfile = async (req, res) => {
   const { id } = req.params;
   const user = await userModel.findById(id).populate({

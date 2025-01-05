@@ -37,19 +37,22 @@ block content
       small.video-info__owner Uploaded By 
           a.userpage(href=`/users/${video.owner._id}`) #{video.owner.user_name}
 
-    if loggedInUser._id
+    
       div.comments 
-        form#commentForm.comment__form
-          textarea(placeholder="Write down a comment....")
-          button.btn.btn--comment Add Comment
+        if loggedInUser._id
+          form#commentForm.comment__form
+            textarea(placeholder="Write down a comment....")
+            button.btn.btn--comment Add Comment
 
         ul.comments__list
           each comment in video.comments.reverse()
-            li 
+            li(data-id=comment._id)
               i.fas.fa-comment 
               div.comments__content #{comment.comment_text} 
-                //- span #{comment.published_date}
-                //- span #{comment.owner}
+                span #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
+                span #{comment.owner.user_name}
+              if String(comment.owner._id) === String(loggedInUser._id) 
+                button.btn.btn--delete ❌
 
 
 block scripts 

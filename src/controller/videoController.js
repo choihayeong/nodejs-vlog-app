@@ -18,7 +18,13 @@ export const getVideo = async (req, res) => {
   const video = await videoModel
     .findById(id)
     .populate("owner")
-    .populate("comments");
+    .populate({
+      path: "comments",
+      populate: {
+        path: "owner",
+        model: "User",
+      },
+    });
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
@@ -206,5 +212,5 @@ export const createComment = async (req, res) => {
   comment_user.comments.push(comment._id);
   comment_user.save();
 
-  return res.sendStatus(201); // 201 Status means "Created"
+  return res.status(201).json({ newCommentId: comment._id }); // 201 Status means "Created"
 };
