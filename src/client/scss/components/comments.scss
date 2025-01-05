@@ -22,4 +22,34 @@
       margin-top: 0.5rem;
     }
   }
+
+  &__content {
+  }
+  &__meta {
+    margin-top: 0.5rem;
+    color: #ccc;
+    font-size: 0.825rem;
+
+    span {
+      position: relative;
+      display: inline-block;
+    }
+  }
+
+  &__user {
+    position: absolute;
+    margin-left: 0.825rem;
+    padding-left: 0.825rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 1px;
+      height: 0.825rem;
+      background-color: #ccc;
+      transform: translateY(-50%);
+    }
+  }
 }

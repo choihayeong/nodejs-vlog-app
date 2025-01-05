@@ -49,10 +49,11 @@ block content
             li(data-id=comment._id)
               i.fas.fa-comment 
               div.comments__content #{comment.comment_text} 
-                span #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
-                span #{comment.owner.user_name}
+              div.comments__meta
+                span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
+                span.comments__user #{comment.owner.user_name}
               if String(comment.owner._id) === String(loggedInUser._id) 
-                button.btn.btn--delete ❌
+                button.btn-delete ❌
 
 
 block scripts 
