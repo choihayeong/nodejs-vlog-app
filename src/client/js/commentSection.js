@@ -1,6 +1,22 @@
 const inputVideoId = document.getElementById("videoId");
 const formEl = document.getElementById("commentForm");
 
+const importNewComment = (text) => {
+  const commentsListEl = document.querySelector(".comments__list");
+  const newCommentEl = document.createElement("li");
+  const iconEl = document.createElement("i");
+  const divEl = document.createElement("div");
+
+  iconEl.classList.add("fa-comment", "fas");
+
+  divEl.innerText = `${text}`;
+
+  newCommentEl.appendChild(iconEl);
+  newCommentEl.appendChild(divEl);
+
+  commentsListEl.prepend(newCommentEl);
+};
+
 const submitComment = async (event) => {
   event.preventDefault();
   const textareaEl = formEl.querySelector("textarea");
@@ -11,7 +27,7 @@ const submitComment = async (event) => {
     return alert("공백은 댓글로 입력할 수 없습니당");
   }
 
-  await fetch(`/api/videos/${videoId}/comment`, {
+  const { status } = await fetch(`/api/videos/${videoId}/comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +37,9 @@ const submitComment = async (event) => {
 
   textareaEl.value = "";
 
-  window.location.reload();
+  if (status === 201) {
+    importNewComment(text);
+  }
 };
 
 if (formEl) {
