@@ -18,6 +18,8 @@ const submitComment = (event) => {
     },
     body: JSON.stringify({ text }),
   });
+
+  textareaEl.value = "";
 };
 
 if (formEl) {

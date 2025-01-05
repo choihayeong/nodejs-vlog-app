@@ -1,6 +1,8 @@
 import userModel from "../models/User";
 import videoModel from "../models/Video";
+import commentModel from "../models/Comment";
 
+// MARK: Home(ALL Videos)
 export const home = async (req, res) => {
   const videos = await videoModel
     .find({})
@@ -10,6 +12,7 @@ export const home = async (req, res) => {
   return res.render("home", { pageTitle: "Home", videos });
 };
 
+// MARK: READ Video
 export const getVideo = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id).populate("owner");
@@ -24,6 +27,7 @@ export const getVideo = async (req, res) => {
   });
 };
 
+// MARK: UPDATE for Video
 export const getEditVideo = async (req, res) => {
   const { id } = req.params;
   const {
@@ -82,6 +86,7 @@ export const postEditVideo = async (req, res) => {
   return res.redirect(`/videos/${id}`);
 };
 
+// MARK: DELETE Video
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
   const {
@@ -102,6 +107,7 @@ export const deleteVideo = async (req, res) => {
   return res.redirect("/");
 };
 
+// MARK: Search
 export const searchVideo = async (req, res) => {
   const { keyword } = req.query;
 
@@ -122,6 +128,7 @@ export const searchVideo = async (req, res) => {
   return res.render("search", { pageTitle: "Search Video", videos, keyword });
 };
 
+// MARK: CREATE Video
 export const getUploadVideo = (req, res) =>
   res.render("upload", { pageTitle: "Upload your video" });
 
@@ -154,6 +161,7 @@ export const postUploadVideo = async (req, res) => {
   }
 };
 
+// MARK: API for Video views
 export const registerView = async (req, res) => {
   const { id } = req.params;
   const video = await videoModel.findById(id);
@@ -168,8 +176,25 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
 };
 
-export const createComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  return res.end();
+// MARK: API for Video comments
+export const createComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req;
+
+  const video = await videoModel.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  const comment = await commentModel.create({
+    comment_text: text,
+    owner: user._id,
+    video: id,
+  });
+
+  return res.sendStatus(201); // 201 Status means "Created"
 };
