@@ -15,7 +15,10 @@ export const home = async (req, res) => {
 // MARK: READ Video
 export const getVideo = async (req, res) => {
   const { id } = req.params;
-  const video = await videoModel.findById(id).populate("owner");
+  const video = await videoModel
+    .findById(id)
+    .populate("owner")
+    .populate("comments");
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Not Found" });
@@ -185,6 +188,7 @@ export const createComment = async (req, res) => {
   } = req;
 
   const video = await videoModel.findById(id);
+  const comment_user = await userModel.findById(user._id);
 
   if (!video) {
     return res.sendStatus(404);
@@ -195,6 +199,12 @@ export const createComment = async (req, res) => {
     owner: user._id,
     video: id,
   });
+
+  video.comments.push(comment._id);
+  video.save();
+
+  comment_user.comments.push(comment._id);
+  comment_user.save();
 
   return res.sendStatus(201); // 201 Status means "Created"
 };

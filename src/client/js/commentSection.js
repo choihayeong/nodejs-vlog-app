@@ -1,7 +1,7 @@
 const inputVideoId = document.getElementById("videoId");
 const formEl = document.getElementById("commentForm");
 
-const submitComment = (event) => {
+const submitComment = async (event) => {
   event.preventDefault();
   const textareaEl = formEl.querySelector("textarea");
   const text = textareaEl.value;
@@ -11,7 +11,7 @@ const submitComment = (event) => {
     return alert("공백은 댓글로 입력할 수 없습니당");
   }
 
-  fetch(`/api/videos/${videoId}/comment`, {
+  await fetch(`/api/videos/${videoId}/comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -20,6 +20,8 @@ const submitComment = (event) => {
   });
 
   textareaEl.value = "";
+
+  window.location.reload();
 };
 
 if (formEl) {

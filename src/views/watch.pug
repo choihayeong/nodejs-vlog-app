@@ -28,12 +28,6 @@ block content
     br
     a(href=`${video.id}/delete`) Delete Video &rarr;
 
-  if loggedInUser._id
-    div.comments 
-      form#commentForm.comment__form
-        textarea(placeholder="Write down a comment....")
-        button Add Comment
-
   div 
     p=video.vlog_desc
     small=video.published_date 
@@ -41,6 +35,21 @@ block content
   div 
     small Uploaded By 
       a(href=`/users/${video.owner._id}`) #{video.owner.user_name}
+
+  if loggedInUser._id
+    div.comments 
+      form#commentForm.comment__form
+        textarea(placeholder="Write down a comment....")
+        button Add Comment
+
+      ul.comments__list
+        each comment in video.comments.reverse()
+          li 
+            i.fas.fa-comment
+            | #{comment.comment_text}
+
+
+
 
 block scripts 
   script(src="/statics/js/videoPlayer.js")
