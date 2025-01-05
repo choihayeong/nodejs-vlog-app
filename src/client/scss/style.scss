@@ -8,13 +8,14 @@
 @import "./components/forms";
 @import "./components/shared";
 @import "./components/video-player";
+@import "./components/comments";
 
 // Views
 @import "./views/edit-profile";
 @import "./views/search";
 @import "./views/my-profile";
 @import "./views/upload.scss";
-// @import "./views/watch.scss";
+@import "./views/watch.scss";
 
 // Defaults
 
@@ -32,6 +33,19 @@ button {
 
 img {
   vertical-align: top;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  color: #232323;
+  box-sizing: border-box;
+  font: inherit;
+  resize: none;
 }
 
 .blind {

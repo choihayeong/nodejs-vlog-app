@@ -1,0 +1,34 @@
+.video-info {
+  &__desc {
+    font-size: 1rem;
+  }
+  small {
+    position: relative;
+    display: inline-block;
+    font-size: 0.825rem;
+    color: #ccc;
+  }
+  &__published-date {
+  }
+  &__owner {
+    padding-left: 0.825rem;
+    margin-left: 0.825rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 1px;
+      height: 0.825rem;
+      background-color: #ccc;
+      transform: translateY(-50%);
+    }
+
+    .userpage {
+      color: #e1ffe1;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+  }
+}

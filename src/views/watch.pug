@@ -1,54 +1,55 @@
 extends base
 
 block content 
-  div#videoContainer.video-container
-    input(type="hidden", value=video._id)#videoId
-    video(src=`/${video.file_url}`, autoplay)
-    div#videoController.controller 
-      div.controller__play
-        span#play.controller__play-btn 
-          i.fas.fa-play 
-        div.controller__time
-          span#currentTime 00:00
-          span.split /
-          span#totalTime 00:00
-      input(type="range", step="1", value="0", min="0")#timeline.controller__timeline 
-      div.controller__volume
-        input(type="range", step="0.1", value="0.5", min="0", max="1")#volume
-        span#mute 
-          i.fas.fa-volume-up
-      div 
-        button#fullScreen 
-          i.fas.fa-expand
+  section.section.section--video
+    div#videoContainer.video-container
+      input(type="hidden", value=video._id)#videoId
+      video(src=`/${video.file_url}`, autoplay)
+      div#videoController.controller 
+        div.controller__play
+          span#play.controller__play-btn 
+            i.fas.fa-play 
+          div.controller__time
+            span#currentTime 00:00
+            span.split /
+            span#totalTime 00:00
+        input(type="range", step="1", value="0", min="0")#timeline.controller__timeline 
+        div.controller__volume
+          input(type="range", step="0.1", value="0.5", min="0", max="1")#volume
+          span#mute 
+            i.fas.fa-volume-up
+        div 
+          button#fullScreen 
+            i.fas.fa-expand
 
-  hr
+    hr
 
-  if String(video.owner._id) === String(loggedInUser._id)
-    a(href=`${video.id}/edit`) Edit Video &rarr;
-    br
-    a(href=`${video.id}/delete`) Delete Video &rarr;
+    
+    if String(video.owner._id) === String(loggedInUser._id)
+      div.video-owner
+        a(href=`${video.id}/edit`) Edit Video &rarr;
+        br
+        a(href=`${video.id}/delete`) Delete Video &rarr;
 
-  div 
-    p=video.vlog_desc
-    small=video.published_date 
+    div.video-info 
+      p.video-info__desc=video.vlog_desc
+      small.video-info__published-date=video.published_date 
+      small.video-info__owner Uploaded By 
+          a.userpage(href=`/users/${video.owner._id}`) #{video.owner.user_name}
 
-  div 
-    small Uploaded By 
-      a(href=`/users/${video.owner._id}`) #{video.owner.user_name}
+    if loggedInUser._id
+      div.comments 
+        form#commentForm.comment__form
+          textarea(placeholder="Write down a comment....")
+          button.btn.btn--comment Add Comment
 
-  if loggedInUser._id
-    div.comments 
-      form#commentForm.comment__form
-        textarea(placeholder="Write down a comment....")
-        button Add Comment
-
-      ul.comments__list
-        each comment in video.comments.reverse()
-          li 
-            i.fas.fa-comment
-            | #{comment.comment_text}
-
-
+        ul.comments__list
+          each comment in video.comments.reverse()
+            li 
+              i.fas.fa-comment 
+              div.comments__content #{comment.comment_text} 
+                //- span #{comment.published_date}
+                //- span #{comment.owner}
 
 
 block scripts 
