@@ -1,4 +1,5 @@
 import userModel from "../models/User";
+import commentModel from "../models/Comment";
 import bcrypt from "bcrypt";
 
 // MARK: Join Account
@@ -323,4 +324,20 @@ export const getUserProfile = async (req, res) => {
   });
 };
 
+// MARK: [Admin] API for Deleting user's All Comments
+export const deleteUserAllComments = async (req, res) => {
+  const { user_id } = req.params;
+
+  // comments 테이블에 해당 user와 관련된 데이터들 삭제
+  await commentModel.deleteMany({ owner: { $in: user_id } });
+
+  // users 테이블의 comments를 초기화
+  await userModel.findByIdAndUpdate(user_id, {
+    comments: [], // or null.....?
+  });
+
+  res.send("Delete User's All Comments");
+};
+
+// MARK: 유저 삭제
 export const deleteUser = (req, res) => res.send("Delete User");
