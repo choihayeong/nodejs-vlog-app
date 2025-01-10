@@ -216,12 +216,14 @@ export const deleteComment = async (req, res) => {
     params: { comment_id, video_id },
   } = req;
 
-  const comment = await commentModel.findById(comment_id);
+  const comment = await commentModel.findById(comment_id).populate("video");
+  const commentOwner = await userModel.findById(comment.owner);
+  const userComments = commentOwner.comments;
+  const videoComments = comment.video.comments;
 
   if (!comment) {
     req.flash("error", "Not Found");
     return;
-    // return res.status(404).render("404", { pageTitle: "404 Not Found" });
   }
 
   if (String(comment.owner) !== user._id) {
@@ -230,6 +232,15 @@ export const deleteComment = async (req, res) => {
   }
 
   await commentModel.findByIdAndDelete(comment_id);
+
+  // deleting relation comments data in other models
+  await videoModel.findByIdAndUpdate(video_id, {
+    comments: videoComments.filter((item) => String(item) !== comment_id),
+  });
+
+  await userModel.findByIdAndUpdate(user._id, {
+    comments: userComments.filter((item) => String(item) !== comment_id),
+  });
 
   return res.sendStatus(202);
 };
