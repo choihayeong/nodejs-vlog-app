@@ -84,12 +84,6 @@ export const postEditVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
 
-  // await videoModel.findByIdAndUpdate(id, {
-  //   vlog_title,
-  //   vlog_desc,
-  //   hashtags: videoModel.formatHashtags(hashtags),
-  // });
-
   req.flash("success", "Changes saved.");
 
   return res.redirect(`/videos/${id}`);
@@ -213,4 +207,29 @@ export const createComment = async (req, res) => {
   comment_user.save();
 
   return res.status(201).json({ newCommentId: comment._id }); // 201 Status means "Created"
+};
+
+// MARK: API for Delete a Comment
+export const deleteComment = async (req, res) => {
+  const {
+    session: { user },
+    params: { comment_id, video_id },
+  } = req;
+
+  const comment = await commentModel.findById(comment_id);
+
+  if (!comment) {
+    req.flash("error", "Not Found");
+    return;
+    // return res.status(404).render("404", { pageTitle: "404 Not Found" });
+  }
+
+  if (String(comment.owner) !== user._id) {
+    req.flash("error", "Not Authorized");
+    return;
+  }
+
+  await commentModel.findByIdAndDelete(comment_id);
+
+  return res.sendStatus(202);
 };

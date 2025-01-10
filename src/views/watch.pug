@@ -46,14 +46,14 @@ block content
 
         ul.comments__list
           each comment in video.comments.reverse()
-            li(data-id=comment._id)
+            li
               i.fas.fa-comment 
               div.comments__content #{comment.comment_text} 
               div.comments__meta
                 span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
                 span.comments__user #{comment.owner.user_name}
               if String(comment.owner._id) === String(loggedInUser._id) 
-                button.btn-delete ❌
+                button.btn-delete(data-id=comment._id) ❌
 
 
 block scripts 

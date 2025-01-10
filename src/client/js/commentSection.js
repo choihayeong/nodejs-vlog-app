@@ -1,6 +1,8 @@
 const inputVideoId = document.getElementById("videoId");
 const formEl = document.getElementById("commentForm");
+const deleteBtnEls = document.querySelectorAll(".btn-delete");
 
+// MARK: 실시간 댓글
 const importNewComment = (text, idx) => {
   const commentsListEl = document.querySelector(".comments__list");
   const newCommentEl = document.createElement("li");
@@ -22,6 +24,7 @@ const importNewComment = (text, idx) => {
   commentsListEl.prepend(newCommentEl);
 };
 
+// MARK: 댓글 생성
 const submitComment = async (event) => {
   event.preventDefault();
   const textareaEl = formEl.querySelector("textarea");
@@ -50,4 +53,28 @@ const submitComment = async (event) => {
 
 if (formEl) {
   formEl.addEventListener("submit", submitComment);
+}
+
+// MARK: 삭제버튼
+const deleteComment = async (id) => {
+  const commentId = id;
+  const videoId = inputVideoId.value;
+
+  const response = await fetch(`/api/comment/${commentId}/video/${videoId}`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 202) {
+    // 새로고침 ㅋㅋ
+  }
+};
+
+if (deleteBtnEls) {
+  deleteBtnEls.forEach((item, index) => {
+    const { id } = item.dataset;
+
+    item.addEventListener("click", function () {
+      deleteComment(id);
+    });
+  });
 }
