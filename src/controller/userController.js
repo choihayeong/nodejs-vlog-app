@@ -339,5 +339,35 @@ export const deleteUserAllComments = async (req, res) => {
   res.send("Delete User's All Comments");
 };
 
+// MARK: 유저가 작성한 댓글 모아보기
+export const getUserComments = async (req, res) => {
+  const { id } = req.params;
+  const loggedInUser = req.session.user._id;
+
+  const user = await userModel.findById(id).populate({
+    path: "comments",
+    populate: {
+      path: "video",
+      model: "Video",
+    },
+  });
+  const { comments } = user;
+
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User Not Found." });
+  }
+  if (loggedInUser !== String(user._id)) {
+    req.flash("error", "Not Authorized");
+
+    return res.status(401).redirect("/");
+  }
+
+  return res.render("users/comments", {
+    pageTitle: `${user.user_name} Comments`,
+    user: user,
+    comments: comments,
+  });
+};
+
 // MARK: 유저 삭제
 export const deleteUser = (req, res) => res.send("Delete User");

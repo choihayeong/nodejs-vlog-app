@@ -6,16 +6,21 @@ block content
         h2.section__title.blind #{user.user_name} Profile 
 
         div.my-profile
-            figure.avatar 
-                img(src=`/${user.avatar_url}`, alt="")
-            
-            p.my-profile__name=user.user_name
+            div.my-profile__visual 
+                figure.avatar 
+                    img(src=`/${user.avatar_url}`, alt="")
+                
+                p.my-profile__name=user.user_name
 
-            if user.videos.length !== 0
-                ul.videolist 
-                    each video in user.videos 
-                        li 
-                            +video(video)
-            else
-                div.no-data 
-                    p Sorry nothing found.
+                if String(loggedInUser._id) === String(user._id)
+                    a.my-profile__link(href=`./${user._id}/comments`) 작성 댓글 보러가기 &rarr;
+
+            article.my-profile__videos
+                if user.videos.length !== 0
+                    ul.videolist 
+                        each video in user.videos 
+                            li 
+                                +video(video)
+                else
+                    div.no-data 
+                        p Sorry nothing found.

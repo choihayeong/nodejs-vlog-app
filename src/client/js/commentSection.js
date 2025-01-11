@@ -55,7 +55,7 @@ if (formEl) {
   formEl.addEventListener("submit", submitComment);
 }
 
-// MARK: 삭제버튼
+// MARK: 댓글 삭제버튼
 const deleteComment = async (id) => {
   const commentId = id;
   const videoId = inputVideoId.value;

@@ -9,6 +9,7 @@ import {
   postEditUser,
   getChangePassword,
   postChangePassword,
+  getUserComments,
 } from "../controller/userController";
 import {
   avatarUpload,
@@ -35,5 +36,6 @@ userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 
 userRouter.get("/:id", getUserProfile);
+userRouter.get("/:id/comments", getUserComments);
 
 export default userRouter;

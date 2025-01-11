@@ -1,0 +1,34 @@
+extends ../base
+
+block content 
+    section.section.section--myprofile
+        h2.section__title.blind #{user.user_name} Profile 
+
+        div.my-profile
+
+            article.my-profile__comments 
+                if comments.length !== 0
+                    a(href=`/api/comments/${user._id}/user`) ⚠️ 모든 댓글 삭제하기 
+                    ul.comments__list 
+                        each comment in comments
+                            li 
+                                div.comments__video-info 
+                                    input(type="hidden", value=comment.video._id)#videoId
+                                    p 비디오 : 
+                                        a(href=`/videos/${comment.video._id}`) #{comment.video.vlog_title}
+                                
+                                div.comments__content 
+                                    i.fas.fa-comment 
+                                    | 내 댓글 : #{comment.comment_text} 
+                                div.comments__meta
+                                    span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
+                                button.btn-delete(data-id=comment._id) ❌
+                else
+                    div.no-data
+                        p You don't have any your comments :P
+
+block scripts 
+    if loggedInUser._id
+        script(src="/statics/js/commentSection.js")
+
+
