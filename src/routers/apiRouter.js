@@ -3,9 +3,8 @@ import {
   registerView,
   createComment,
   deleteComment,
-} from "../controller/videoController";
-
-import { deleteUserAllComments } from "../controller/userController";
+  deleteUserAllComments,
+} from "../controller/apiController";
 
 const apiRouter = express.Router();
 

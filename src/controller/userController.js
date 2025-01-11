@@ -324,21 +324,6 @@ export const getUserProfile = async (req, res) => {
   });
 };
 
-// MARK: [Admin] API for Deleting user's All Comments
-export const deleteUserAllComments = async (req, res) => {
-  const { user_id } = req.params;
-
-  // comments 테이블에 해당 user와 관련된 데이터들 삭제
-  await commentModel.deleteMany({ owner: { $in: user_id } });
-
-  // users 테이블의 comments를 초기화
-  await userModel.findByIdAndUpdate(user_id, {
-    comments: [], // or null.....?
-  });
-
-  res.send("Delete User's All Comments");
-};
-
 // MARK: 유저가 작성한 댓글 모아보기
 export const getUserComments = async (req, res) => {
   const { id } = req.params;
