@@ -1,3 +1,7 @@
+import videoModel from "../models/Video";
+import userModel from "../models/User";
+import commentModel from "../models/Comment";
+
 // MARK: API for Video views
 export const registerView = async (req, res) => {
   const { id } = req.params;
@@ -83,13 +87,49 @@ export const deleteComment = async (req, res) => {
 export const deleteUserAllComments = async (req, res) => {
   const { user_id } = req.params;
 
+  const user = await userModel.findById(user_id).populate({
+    path: "comments",
+    populate: {
+      path: "video",
+    },
+  });
+
+  const { comments } = user;
+
+  // [wip] 유저가 댓글을 삭제했을 때 관련된 비디오에 있는 댓글들도 삭제해 줘야함...
+  comments.forEach(async (item, index) => {
+    const videoComments = item.video.comments;
+
+    // console.log(videoComments);
+    // console.log(item._id);
+
+    // await videoModel.findByIdAndUpdate(item.video._id, {
+    //   comments: videoComments.filter((comment) => String(comment) !== String(item._id))
+    // });
+  });
+
   // comments 테이블에 해당 user와 관련된 데이터들 삭제
   await commentModel.deleteMany({ owner: { $in: user_id } });
 
   // users 테이블의 comments를 초기화
   await userModel.findByIdAndUpdate(user_id, {
-    comments: [], // or null.....?
+    comments: [],
   });
 
   res.send("Delete User's All Comments");
+};
+
+// MARK: [Admin] API for Deleting video's All Comments
+export const deleteVideoAllComments = async (req, res) => {
+  const { video_id } = req.params;
+
+  // comments 테이블에 해당 video와 관련된 데이터들 삭제
+  await commentModel.deleteMany({ video: { $in: video_id } });
+
+  // videos 테이블의 comments를 초기화
+  await videoModel.findByIdAndUpdate(video_id, {
+    comments: [],
+  });
+
+  res.send("Delete Video's All Comments");
 };
