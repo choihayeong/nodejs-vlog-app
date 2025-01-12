@@ -65,7 +65,7 @@ const deleteComment = async (id) => {
   });
 
   if (response.status === 202) {
-    // 새로고침 ㅋㅋ
+    window.location.reload();
   }
 };
 
@@ -74,7 +74,10 @@ if (deleteBtnEls) {
     const { id } = item.dataset;
 
     item.addEventListener("click", function () {
-      deleteComment(id);
+      const confirmStatus = confirm("댓글을 삭제하시겠습니까?");
+      if (confirmStatus) {
+        deleteComment(id);
+      }
     });
   });
 }
