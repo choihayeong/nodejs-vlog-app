@@ -118,11 +118,15 @@ export const deleteComment = async (req, res) => {
 export const deleteUserAllVideos = async (req, res) => {
   const { user_id } = req.params;
 
+  // users 테이블의 해당 유저의 videos 속성을 초기화
   await userModel.findByIdAndUpdate(user_id, {
     videos: [],
   });
 
+  // videos 테이블에서 관련 owner(유저)에 해당하는 데이터 삭제
   await videoModel.deleteMany({ owner: { $in: user_id } });
+
+  // [wip] comments.....
 
   return res.send("Delete User's All Videos");
 };
@@ -160,17 +164,34 @@ export const deleteUserAllComments = async (req, res) => {
 
   const { comments } = user;
 
-  // [wip] 유저가 댓글을 삭제했을 때 관련된 비디오에 있는 댓글들도 삭제해 줘야함...
-  comments.forEach(async (item, index) => {
-    const videoComments = item.video.comments;
+  // 유저가 댓글을 삭제했을 때 관련된 비디오에 있는 댓글들도 삭제해 줘야함
+  let commentsId = [];
 
-    // console.log(videoComments);
-    // console.log(item._id);
+  for (let i = 0; i < comments.length; i++) {
+    commentsId.push(String(comments[i]._id));
+  }
 
-    // await videoModel.findByIdAndUpdate(item.video._id, {
-    //   comments: videoComments.filter((comment) => String(comment) !== String(item._id))
-    // });
-  });
+  let videosId = [];
+
+  for (let i = 0; i < comments.length; i++) {
+    videosId.push(comments[i].video._id);
+  }
+
+  videosId = videosId.filter((e, index) => videosId.indexOf(e) === index);
+
+  for (let i = 0; i < videosId.length; i++) {
+    const video = await videoModel.findById(videosId[i]);
+    const videoComments = video.comments;
+    let updatedComments = [];
+
+    updatedComments = videoComments.filter(
+      (item) => !commentsId.includes(String(item)),
+    );
+
+    await videoModel.findByIdAndUpdate(videosId[i], {
+      comments: updatedComments,
+    });
+  }
 
   // comments 테이블에 해당 user와 관련된 데이터들 삭제
   await commentModel.deleteMany({ owner: { $in: user_id } });
@@ -196,4 +217,9 @@ export const deleteVideoAllComments = async (req, res) => {
   });
 
   res.send("Delete Video's All Comments");
+};
+
+// MARK: [Admin] API for Updating video's Comments
+export const updateVideosComments = async (req, res) => {
+  res.send("Update Video's Comments");
 };
