@@ -1,6 +1,6 @@
 const inputVideoId = document.getElementById("videoId");
 const formEl = document.getElementById("commentForm");
-const deleteBtnEls = document.querySelectorAll(".btn-delete");
+const deleteBtnEls = document.querySelectorAll(".btn-delete--comment");
 
 // MARK: 실시간 댓글
 const importNewComment = (text, idx) => {

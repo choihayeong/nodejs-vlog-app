@@ -17,6 +17,36 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
 };
 
+// MARK: API for Delete a Video
+export const deleteVideo = async (req, res) => {
+  const {
+    params: { id },
+    session: {
+      user: { _id },
+    },
+  } = req;
+
+  const video = await videoModel.findById(id);
+  const videoOwner = await userModel.findById(video.owner);
+
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "404 Not Found." });
+  }
+
+  if (String(video.owner) !== _id) {
+    return res.status(401).redirect("/");
+  }
+
+  await videoModel.findByIdAndDelete(id);
+  await userModel.findByIdAndUpdate(video.owner, {
+    videos: videoOwner.videos.filter(
+      (item) => String(item) !== String(video._id),
+    ),
+  });
+
+  return res.sendStatus(202); // 왜 backend에서 redirect가 안되는걸까....
+};
+
 // MARK: API for Video comments
 export const createComment = async (req, res) => {
   const {

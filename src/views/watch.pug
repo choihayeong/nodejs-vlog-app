@@ -24,12 +24,12 @@ block content
 
     hr
 
-    
     if String(video.owner._id) === String(loggedInUser._id)
       div.video-owner
-        a(href=`${video.id}/edit`) Edit Video &rarr;
-        br
-        a(href=`${video.id}/delete`) Delete Video &rarr;
+        span 
+          a(href=`${video.id}/edit`).video-owner__edit 📝 Edit Video
+        span 
+          button(type="button")#deleteVideo.btn-delete.btn-delete--video ❌ Delete Video
 
     div.video-info 
       p.video-info__desc=video.vlog_desc
@@ -53,7 +53,7 @@ block content
                 span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
                 span.comments__user #{comment.owner.user_name}
               if String(comment.owner._id) === String(loggedInUser._id) 
-                button.btn-delete(data-id=comment._id) ❌
+                button.btn-delete.btn-delete--comment(data-id=comment._id) ❌
 
 
 block scripts 

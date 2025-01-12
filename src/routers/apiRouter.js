@@ -5,6 +5,7 @@ import {
   deleteComment,
   deleteUserAllComments,
   deleteVideoAllComments,
+  deleteVideo,
 } from "../controller/apiController";
 
 const apiRouter = express.Router();
@@ -15,6 +16,8 @@ apiRouter.delete(
   "/comment/:comment_id([0-9a-f]{24})/video/:video_id([0-9a-f]{24})",
   deleteComment,
 );
+apiRouter.delete("/video/:id([0-9a-f]{24})/delete", deleteVideo);
+
 /**
  * ❗[Admin] : 해당 유저 아이디의 코멘트 모두 삭제
  */

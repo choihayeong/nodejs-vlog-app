@@ -15,6 +15,8 @@ const fullScreenIcon = fullScreenBtnEl.querySelector("i");
 
 const inputVideoId = document.getElementById("videoId");
 
+const deleteBtnEl = document.getElementById("deleteVideo");
+
 let controllerTimeout = null;
 let controllerMovementTiemout = null;
 let initVolume = 0.5;
@@ -128,6 +130,19 @@ const endedVideo = () => {
   });
 };
 
+// MARK: 비디오 삭제 버튼
+const handleDeleteVideo = async () => {
+  const videoId = inputVideoId.value;
+
+  const response = await fetch(`/api/video/${videoId}/delete`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 202) {
+    window.location.href = "/";
+  }
+};
+
 playBtnEl.addEventListener("click", clickPlayBtn);
 muteBtnEl.addEventListener("click", clickMuteBtn);
 videoEl.addEventListener("pause", handleVideoPause);
@@ -140,3 +155,11 @@ timelineEl.addEventListener("input", changeTimeLineController);
 fullScreenBtnEl.addEventListener("click", changeScreenStatus);
 videoContainerEl.addEventListener("mousemove", moveOnMouseVideo);
 videoContainerEl.addEventListener("mouseleave", moveOutMouseVideo);
+
+deleteBtnEl.addEventListener("click", function () {
+  const confirmStatus = confirm("정말 삭제하시겠습니까?");
+
+  if (confirmStatus) {
+    handleDeleteVideo();
+  }
+});

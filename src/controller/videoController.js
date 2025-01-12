@@ -1,6 +1,5 @@
 import userModel from "../models/User";
 import videoModel from "../models/Video";
-import commentModel from "../models/Comment";
 
 // MARK: Home(ALL Videos)
 export const home = async (req, res) => {
@@ -87,27 +86,6 @@ export const postEditVideo = async (req, res) => {
   req.flash("success", "Changes saved.");
 
   return res.redirect(`/videos/${id}`);
-};
-
-// MARK: DELETE Video
-export const deleteVideo = async (req, res) => {
-  const { id } = req.params;
-  const {
-    user: { _id },
-  } = req.session;
-  const video = await videoModel.findById(id);
-
-  if (!video) {
-    return res.status(404).render("404", { pageTitle: "404 Not Found" });
-  }
-
-  if (String(video.owner) !== _id) {
-    return res.status(403).redirect("/");
-  }
-
-  await videoModel.findByIdAndDelete(id);
-
-  return res.redirect("/");
 };
 
 // MARK: Search
