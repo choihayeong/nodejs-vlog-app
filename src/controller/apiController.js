@@ -26,8 +26,9 @@ export const deleteVideo = async (req, res) => {
     },
   } = req;
 
-  const video = await videoModel.findById(id);
+  const video = await videoModel.findById(id).populate("comments");
   const videoOwner = await userModel.findById(video.owner);
+  const videoComments = video.comments;
 
   if (!video) {
     return res.status(404).render("404", { pageTitle: "404 Not Found." });
@@ -37,14 +38,46 @@ export const deleteVideo = async (req, res) => {
     return res.status(401).redirect("/");
   }
 
+  // 비디오 소유자가 비디오를 삭제했을 때 관련된 유저 테이블에 있는 댓글 속성들 업데이트
+  let commentsId = [];
+
+  for (let i = 0; i < videoComments.length; i++) {
+    commentsId.push(String(videoComments[i]._id));
+  }
+
+  let commentsUserId = [];
+
+  for (let i = 0; i < videoComments.length; i++) {
+    commentsUserId.push(videoComments[i].owner);
+  }
+
+  for (let i = 0; i < commentsUserId.length; i++) {
+    const user = await userModel.findById(commentsUserId[i]);
+    const userComments = user.comments;
+    let updatedComments = [];
+
+    updatedComments = userComments.filter(
+      (item) => !commentsId.includes(String(item)),
+    );
+
+    await userModel.findByIdAndUpdate(commentsUserId[i], {
+      comments: updatedComments,
+    });
+  }
+
   await videoModel.findByIdAndDelete(id);
+
+  // users 테이블에서 해당 유저의 videos 속성 업데이트
   await userModel.findByIdAndUpdate(video.owner, {
     videos: videoOwner.videos.filter(
       (item) => String(item) !== String(video._id),
     ),
   });
 
-  return res.sendStatus(202); // 왜 backend에서 redirect가 안되는걸까....
+  // comments 테이블 업데이트
+  await commentModel.deleteMany({ video: { $in: id } });
+
+  return res.sendStatus(202);
 };
 
 // MARK: API for Video comments
