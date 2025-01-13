@@ -238,8 +238,12 @@ export const deleteUserAllComments = async (req, res) => {
     comments: [],
   });
 
+  // res.sendStatus(202);
   res.send("Delete User's All Comments");
 };
+
+// MARK: [Admin] API for Updating user's Comments
+export const updateUserComments = async (req, res) => {};
 
 // MARK: [Admin] API for Deleting video's All Comments
 export const deleteVideoAllComments = async (req, res) => {
@@ -252,6 +256,8 @@ export const deleteVideoAllComments = async (req, res) => {
   await videoModel.findByIdAndUpdate(video_id, {
     comments: [],
   });
+
+  // [TBD] 유저 테이블에서 comments속성 업데이트
 
   res.send("Delete Video's All Comments");
 };

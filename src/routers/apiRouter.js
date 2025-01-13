@@ -27,7 +27,7 @@ apiRouter.delete("/video/:id([0-9a-f]{24})", deleteVideo);
 apiRouter.get("/videos/:user_id([0-9a-f]{24})/user", deleteUserAllVideos);
 
 /**
- * ❗[Admin] : 비디오 삭제 시 유저의 videos 속성 업데이트
+ * ❗[Admin] : 비디오 삭제 시 유저의 videos 속성 업데이트 (DB)
  */
 apiRouter.put("/user/:user_id([0-9a-f]{24})/videos", updateUserVideos);
 
@@ -44,6 +44,9 @@ apiRouter.get(
   deleteVideoAllComments,
 );
 
+/**
+ * ❗[Admin] : 코멘트가 삭제될 경우 비디오의 comments 속성 업데이트 (DB)
+ */
 apiRouter.put("/video/:video_id([0-9a-f]{24})/comments", updateVideosComments);
 
 export default apiRouter;
