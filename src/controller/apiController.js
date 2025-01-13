@@ -140,6 +140,10 @@ export const updateUserVideos = async (req, res) => {
   const user = await userModel.findById(user_id);
   const userVideos = user.videos;
 
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "404 Not Found" });
+  }
+
   for (let i = 0; i < allVideos.length; i++) {
     allVideosId.push(allVideos[i]._id);
   }
@@ -148,7 +152,9 @@ export const updateUserVideos = async (req, res) => {
     videos: allVideosId.filter((e) => userVideos.indexOf(e) > -1),
   });
 
-  return res.send("Update User's videos");
+  req.flash("success", "Updated DB 😂");
+
+  return res.sendStatus(202);
 };
 
 // MARK: [Admin] API for Deleting user's All Comments

@@ -83,8 +83,6 @@ export const postEditVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
 
-  req.flash("success", "Changes saved.");
-
   return res.redirect(`/videos/${id}`);
 };
 

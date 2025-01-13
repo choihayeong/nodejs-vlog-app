@@ -28,7 +28,7 @@ apiRouter.get("/videos/:user_id([0-9a-f]{24})/user", deleteUserAllVideos);
 /**
  * ❗[Admin] : 비디오 삭제 시 유저의 videos 속성 업데이트
  */
-apiRouter.get("/user/:user_id([0-9a-f]{24})/videos", updateUserVideos);
+apiRouter.put("/user/:user_id([0-9a-f]{24})/videos", updateUserVideos);
 
 /**
  * ❗[Admin] : 해당 유저 아이디의 코멘트 모두 삭제

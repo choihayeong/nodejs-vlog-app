@@ -6,14 +6,18 @@ block content
         h2.section__title.blind #{user.user_name} Profile 
 
         div.my-profile
+            input(type="hidden", value=user._id)#userId
             div.my-profile__visual 
                 figure.avatar 
-                    img(src=`/${user.avatar_url}`, alt="")
+                    img(src=`/${user.avatar_url}`, alt=`${user.user_name} Avatar`)
                 
                 p.my-profile__name=user.user_name
 
                 if String(loggedInUser._id) === String(user._id)
                     a.my-profile__link(href=`./${user._id}/comments`) 작성 댓글 보러가기 &rarr;
+                    br
+                    button(type="button", title="비디오 목록을 업데이트 합니다")#btnRefresh.btn-update 
+                        i.fa-solid.fa-arrows-rotate
 
             article.my-profile__videos
                 if user.videos.length !== 0
@@ -24,3 +28,7 @@ block content
                 else
                     div.no-data 
                         p Sorry nothing found.
+
+block scripts 
+    if loggedInUser._id
+        script(src="/statics/js/userControl.js")
