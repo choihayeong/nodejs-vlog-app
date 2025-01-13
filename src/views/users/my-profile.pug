@@ -16,7 +16,7 @@ block content
                 if String(loggedInUser._id) === String(user._id)
                     a.my-profile__link(href=`./${user._id}/comments`) 작성 댓글 보러가기 &rarr;
                     br
-                    button(type="button", title="비디오 목록을 업데이트 합니다")#btnRefresh.btn-update 
+                    button(type="button", title="비디오 목록을 업데이트 합니다")#refreshVideos.btn-update.btn-update--videos 
                         i.fa-solid.fa-arrows-rotate
 
             article.my-profile__videos

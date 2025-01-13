@@ -16,6 +16,7 @@ const fullScreenIcon = fullScreenBtnEl.querySelector("i");
 const inputVideoId = document.getElementById("videoId");
 
 const deleteBtnEl = document.getElementById("deleteVideo");
+const updateBtnEl = document.getElementById("refreshComments");
 
 let controllerTimeout = null;
 let controllerMovementTiemout = null;
@@ -134,12 +135,25 @@ const endedVideo = () => {
 const handleDeleteVideo = async () => {
   const videoId = inputVideoId.value;
 
-  const response = await fetch(`/api/video/${videoId}/delete`, {
+  const response = await fetch(`/api/video/${videoId}`, {
     method: "DELETE",
   });
 
   if (response.status === 202) {
     window.location.href = "/";
+  }
+};
+
+// MARK: [Admin] 비디오 댓글 refresh 버튼
+const refreshVideoDB = async () => {
+  const videoId = inputVideoId.value;
+
+  const response = await fetch(`/api/video/${videoId}/comments`, {
+    method: "PUT",
+  });
+
+  if (response.status === 202) {
+    alert("DB(videos/comments)에 업데이트 되었습니다!");
   }
 };
 
@@ -163,3 +177,7 @@ deleteBtnEl.addEventListener("click", function () {
     handleDeleteVideo();
   }
 });
+
+if (updateBtnEl) {
+  updateBtnEl.addEventListener("click", refreshVideoDB);
+}

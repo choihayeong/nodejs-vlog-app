@@ -152,8 +152,6 @@ export const updateUserVideos = async (req, res) => {
     videos: allVideosId.filter((e) => userVideos.indexOf(e) > -1),
   });
 
-  req.flash("success", "Updated DB 😂");
-
   return res.sendStatus(202);
 };
 
@@ -227,5 +225,24 @@ export const deleteVideoAllComments = async (req, res) => {
 
 // MARK: [Admin] API for Updating video's Comments
 export const updateVideosComments = async (req, res) => {
-  res.send("Update Video's Comments");
+  const { video_id } = req.params;
+
+  let allCommentsId = [];
+  const allComments = await commentModel.find({});
+  const video = await videoModel.findById(video_id);
+  const videoComments = video.comments;
+
+  for (let i = 0; i < allComments.length; i++) {
+    allCommentsId.push(allComments[i]._id);
+  }
+
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "404 Not Found." });
+  }
+
+  await videoModel.findByIdAndUpdate(video_id, {
+    comments: allCommentsId.filter((e) => videoComments.indexOf(e) > -1),
+  });
+
+  res.sendStatus(202);
 };
