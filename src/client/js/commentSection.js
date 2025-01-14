@@ -88,7 +88,7 @@ const deleteAllComments = async () => {
 
   console.log(userId);
 
-  const response = await fetch(`/api/comments/${userId}/user`, {
+  const response = await fetch(`/api/user/${userId}/comments-all`, {
     method: "DELETE",
   });
 

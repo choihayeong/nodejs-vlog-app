@@ -75,3 +75,17 @@ GH_SECRET=
 /videos/comments
 /videos/comments/delete
 ```
+
+### Design for API domain
+
+> swagger ui 활용.....
+
+- 비디오 조회수 카운트 : `/api/videos/:video_id/view` (POST)
+- 비디오 삭제 : `/api/video/:video_id` (DELETE)
+- 비디오 새 댓글 등록 : `/api/videos/:video_id/comment` (POST)
+- 비디오의 해당 댓글 삭제 : `/api/comment/:comment_id/video/:video_id` (DELETE)
+- 비디오의 댓글 모두 삭제 : `/api/video/:video_id/comments-all` (DELETE)
+
+- 한 유저의 비디오 모두 삭제 : `/api/user/:user_id/videos-all` (DELETE)
+- 한 유저의 비디오 목록 업데이트 : `/api/user/:user_id/videos` (PUT)
+- 한 유저의 댓글 모두 삭제 : `/api/user/:user_id/comments-all` (DELETE)
