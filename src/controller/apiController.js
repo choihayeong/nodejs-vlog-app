@@ -120,7 +120,6 @@ export const deleteComment = async (req, res) => {
   const comment = await commentModel.findById(comment_id).populate("video");
   const commentOwner = await userModel.findById(comment.owner);
   const userComments = commentOwner.comments;
-  const videoComments = comment.video.comments;
 
   if (!comment) {
     req.flash("error", "Not Found");
@@ -135,9 +134,13 @@ export const deleteComment = async (req, res) => {
   await commentModel.findByIdAndDelete(comment_id);
 
   // deleting relation comments data in other models
-  await videoModel.findByIdAndUpdate(video_id, {
-    comments: videoComments.filter((item) => String(item) !== comment_id),
-  });
+  if (video_id !== "deletedVideo") {
+    const videoComments = comment.video.comments;
+
+    await videoModel.findByIdAndUpdate(video_id, {
+      comments: videoComments.filter((item) => String(item) !== comment_id),
+    });
+  }
 
   await userModel.findByIdAndUpdate(user._id, {
     comments: userComments.filter((item) => String(item) !== comment_id),
@@ -211,23 +214,28 @@ export const deleteUserAllComments = async (req, res) => {
   let videosId = [];
 
   for (let i = 0; i < comments.length; i++) {
-    videosId.push(comments[i].video._id);
+    if (comments[i].video) {
+      videosId.push(comments[i].video._id);
+    }
   }
 
   videosId = videosId.filter((e, index) => videosId.indexOf(e) === index);
 
   for (let i = 0; i < videosId.length; i++) {
     const video = await videoModel.findById(videosId[i]);
-    const videoComments = video.comments;
-    let updatedComments = [];
 
-    updatedComments = videoComments.filter(
-      (item) => !commentsId.includes(String(item)),
-    );
+    if (video) {
+      const videoComments = video.comments;
+      let updatedComments = [];
 
-    await videoModel.findByIdAndUpdate(videosId[i], {
-      comments: updatedComments,
-    });
+      updatedComments = videoComments.filter(
+        (item) => !commentsId.includes(String(item)),
+      );
+
+      await videoModel.findByIdAndUpdate(videosId[i], {
+        comments: updatedComments,
+      });
+    }
   }
 
   // comments 테이블에 해당 user와 관련된 데이터들 삭제
@@ -238,8 +246,7 @@ export const deleteUserAllComments = async (req, res) => {
     comments: [],
   });
 
-  // res.sendStatus(202);
-  res.send("Delete User's All Comments");
+  res.sendStatus(202);
 };
 
 // MARK: [Admin] API for Updating user's Comments

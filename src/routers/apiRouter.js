@@ -16,7 +16,7 @@ const apiRouter = express.Router();
 apiRouter.post("/videos/:id([0-9a-f]{24})/view", registerView);
 apiRouter.post("/videos/:id([0-9a-f]{24})/comment", createComment);
 apiRouter.delete(
-  "/comment/:comment_id([0-9a-f]{24})/video/:video_id([0-9a-f]{24})",
+  "/comment/:comment_id([0-9a-f]{24})/video/:video_id",
   deleteComment,
 );
 apiRouter.delete("/video/:id([0-9a-f]{24})", deleteVideo);
@@ -34,13 +34,16 @@ apiRouter.put("/user/:user_id([0-9a-f]{24})/videos", updateUserVideos);
 /**
  * ❗[Admin] : 해당 유저 아이디의 코멘트 모두 삭제
  */
-apiRouter.get("/comments/:user_id([0-9a-f]{24})/user", deleteUserAllComments);
+apiRouter.delete(
+  "/comments/:user_id([0-9a-f]{24})/user",
+  deleteUserAllComments,
+);
 
 /**
  * ❗[Admin] : 해당 비디오의 코멘트 모두 삭제
  */
-apiRouter.get(
-  "/comments/:video_id([0-9a-f]{24})/video",
+apiRouter.delete(
+  "/video/:video_id([0-9a-f]{24})/comments-all",
   deleteVideoAllComments,
 );
 

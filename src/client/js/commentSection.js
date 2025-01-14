@@ -1,8 +1,9 @@
 const inputVideoId = document.getElementById("videoId");
 const formEl = document.getElementById("commentForm");
 const deleteBtnEls = document.querySelectorAll(".btn-delete--comment");
+const deleteAllBtnEl = document.getElementById("deleteAllComments");
 
-// MARK: 실시간 댓글
+// MARK: [wip] 실시간 댓글 (개선 필요)
 const importNewComment = (text, idx) => {
   const commentsListEl = document.querySelector(".comments__list");
   const newCommentEl = document.createElement("li");
@@ -24,7 +25,7 @@ const importNewComment = (text, idx) => {
   commentsListEl.prepend(newCommentEl);
 };
 
-// MARK: 댓글 생성
+// MARK: 댓글 생성 (watch.pug)
 const submitComment = async (event) => {
   event.preventDefault();
   const textareaEl = formEl.querySelector("textarea");
@@ -55,7 +56,7 @@ if (formEl) {
   formEl.addEventListener("submit", submitComment);
 }
 
-// MARK: 댓글 삭제버튼
+// MARK: 댓글 삭제버튼 (watch.pug, users/comments.pug)
 const deleteComment = async (id) => {
   const commentId = id;
   const videoId = inputVideoId.value;
@@ -80,4 +81,23 @@ if (deleteBtnEls) {
       }
     });
   });
+}
+
+const deleteAllComments = async () => {
+  const userId = document.getElementById("userId").value;
+
+  console.log(userId);
+
+  const response = await fetch(`/api/comments/${userId}/user`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 202) {
+    window.location.reload();
+  }
+};
+
+// MARK: 모든 댓글 삭제 버튼 (users/comments.pug)
+if (deleteAllBtnEl) {
+  deleteAllBtnEl.addEventListener("click", deleteAllComments);
 }

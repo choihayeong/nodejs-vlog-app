@@ -49,6 +49,8 @@
 }
 
 .btn-delete {
+  cursor: pointer;
+
   &--video {
     padding: 0.25rem 0.5rem;
     color: #e1ffe1;
