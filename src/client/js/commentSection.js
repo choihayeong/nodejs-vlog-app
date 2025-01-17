@@ -1,4 +1,4 @@
-const inputVideoId = document.getElementById("videoId");
+const inputVideoId = document.getElementById("videoId"); // watch.pug에만 적용할 것
 const formEl = document.getElementById("commentForm");
 const deleteBtnEls = document.querySelectorAll(".btn-delete--comment");
 const deleteAllBtnEl = document.getElementById("deleteAllComments");
@@ -57,9 +57,9 @@ if (formEl) {
 }
 
 // MARK: 댓글 삭제버튼 (watch.pug, users/comments.pug)
-const deleteComment = async (id) => {
+const deleteComment = async (id, video) => {
   const commentId = id;
-  const videoId = inputVideoId.value;
+  const videoId = video;
 
   const response = await fetch(`/api/comment/${commentId}/video/${videoId}`, {
     method: "DELETE",
@@ -72,12 +72,12 @@ const deleteComment = async (id) => {
 
 if (deleteBtnEls) {
   deleteBtnEls.forEach((item, index) => {
-    const { id } = item.dataset;
+    const { id, video } = item.dataset;
 
     item.addEventListener("click", function () {
       const confirmStatus = confirm("댓글을 삭제하시겠습니까?");
       if (confirmStatus) {
-        deleteComment(id);
+        deleteComment(id, video);
       }
     });
   });

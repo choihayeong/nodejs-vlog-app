@@ -150,9 +150,22 @@ export const deleteComment = async (req, res) => {
 };
 
 // MARK: [Admin] API for Deleting user's All Videos
-// ---> 유저가 모든 비디오를 삭제하면...? 비디오와 관련된 댓글들도 삭제해줘야함...! (유저 테이블에서 관련 비디오 댓글 삭제 (비디오 및 코멘트가 삭제되면 유저의 데이터가 업데이트 되어야함) / 비디오 테이블에서 해당 유저와 관련된 비디오 데이터들 삭제 / 코멘트 테이블에서 해당 비디오와 관련된 코멘트 테이터들 삭제)
+// --->
+// 1) 유저 테이블에서 관련 비디오 댓글 삭제 (삭제된 비디오에 댓글 달았던 각 유저의 comments 부분이 업데이트 되어야함)
+// 2) 코멘트 테이블에서 해당 비디오와 관련된 코멘트 테이터들 삭제
 export const deleteUserAllVideos = async (req, res) => {
   const { user_id } = req.params;
+
+  const user = await userModel.findById(user_id).populate("videos");
+  const userVideos = user.videos;
+
+  // [wip] 유저가 비디오를 삭제했을 때 관련된 댓글들도 삭제해 줘야함
+  let videosId = [];
+
+  for (let i = 0; i < userVideos.length; i++) {
+    videosId.push(String(userVideos[i]._id));
+    commentModel.deleteMany({ video: { $in: String(userVideos[i]._id) } });
+  }
 
   // users 테이블의 해당 유저의 videos 속성을 초기화
   await userModel.findByIdAndUpdate(user_id, {
@@ -161,8 +174,6 @@ export const deleteUserAllVideos = async (req, res) => {
 
   // videos 테이블에서 관련 owner(유저)에 해당하는 데이터 삭제
   await videoModel.deleteMany({ owner: { $in: user_id } });
-
-  // [wip] comments.....
 
   return res.send("Delete User's All Videos");
 };

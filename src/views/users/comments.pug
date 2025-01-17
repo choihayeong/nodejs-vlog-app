@@ -14,11 +14,9 @@ block content
                             li 
                                 div.comments__video-info 
                                     if comment.video
-                                        input(type="hidden", value=comment.video._id)#videoId
                                         p 비디오 : 
                                             a(href=`/videos/${comment.video._id}`) #{comment.video.vlog_title}
                                     else 
-                                        input(type="hidden", value="deletedVideo")#videoId
                                         p 비디오 : 
                                             em 삭제된 비디오 입니다.
                                 
@@ -27,7 +25,7 @@ block content
                                     | 내 댓글 : #{comment.comment_text} 
                                 div.comments__meta
                                     span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
-                                button.btn-delete.btn-delete--comment(data-id=comment._id) ❌
+                                button.btn-delete.btn-delete--comment(data-id=comment._id, data-video=comment.video ? comment.video._id : "deletedVideo") ❌
                 else
                     div.no-data
                         p You don't have any your comments :P

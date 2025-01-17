@@ -57,7 +57,7 @@ block content
                 span.comments__date #{`${new Date(comment.published_date).getFullYear()}-${new Date(comment.published_date).getMonth()+1}-${new Date(comment.published_date).getDate()}`}
                 span.comments__user #{comment.owner.user_name}
               if String(comment.owner._id) === String(loggedInUser._id) 
-                button.btn-delete.btn-delete--comment(data-id=comment._id) ❌
+                button.btn-delete.btn-delete--comment(data-id=comment._id, data-video=video._id) ❌
 
 
 block scripts 

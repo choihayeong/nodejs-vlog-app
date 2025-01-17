@@ -9,18 +9,21 @@ block content
             input(type="hidden", value=user._id)#userId
             div.my-profile__visual 
                 figure.avatar 
-                    img(src=`/${user.avatar_url}`, alt=`${user.user_name} Avatar`)
+                    img(src=user.avatar_url ? `/${user.avatar_url}` : `https://dummyimage.com/160x160/e1ffe1/5a5aff&text=${user.user_name}`, alt=`${user.user_name} Avatar`)
                 
                 p.my-profile__name=user.user_name
 
                 if String(loggedInUser._id) === String(user._id)
-                    a.my-profile__link(href=`./${user._id}/comments`) 작성 댓글 보러가기 &rarr;
-                    br
-                    button(type="button", title="비디오 목록을 업데이트 합니다")#refreshVideos.btn-update.btn-update--videos 
-                        i.fa-solid.fa-arrows-rotate
+                    div.my-profile__owner
+                        a.my-profile__link(href=`./${user._id}/comments`) 작성 댓글 보러가기 &rarr;
+                        br
+                        button(type="button", title="비디오 목록을 업데이트 합니다")#refreshVideos.btn-update.btn-update--videos 
+                            i.fa-solid.fa-arrows-rotate
 
             article.my-profile__videos
                 if user.videos.length !== 0
+                    if String(loggedInUser._id) === String(user._id)
+                        button(type="button", title="모든 비디오를 삭제합니다.")#deleteAllVideos.btn-delete ⚠️ 모든 비디오 삭제하기
                     ul.videolist 
                         each video in user.videos 
                             li 

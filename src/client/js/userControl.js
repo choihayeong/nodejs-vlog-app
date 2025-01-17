@@ -1,4 +1,5 @@
 const updateBtnEl = document.getElementById("refreshVideos");
+const deleteAllBtnEl = document.getElementById("deleteAllVideos");
 const inputUserId = document.getElementById("userId");
 
 const refreshUserDB = async () => {
@@ -13,4 +14,13 @@ const refreshUserDB = async () => {
   }
 };
 
+const deleteAllVideos = async () => {
+  const userId = inputUserId.value;
+
+  const response = await fetch(`/api/user/${userId}/videos-all`, {
+    method: "DELETE",
+  });
+};
+
 updateBtnEl.addEventListener("click", refreshUserDB);
+deleteAllBtnEl.addEventListener("click", deleteAllVideos);
