@@ -1,8 +1,13 @@
-// Config
+/* Config */
 @import "./config/reset";
 @import "./config/variables";
 
-// Components
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Components */
 @import "./components/header";
 @import "./components/footer";
 @import "./components/forms";
@@ -10,14 +15,14 @@
 @import "./components/video-player";
 @import "./components/comments";
 
-// Views
+/* Views */
 @import "./views/edit-profile";
 @import "./views/search";
 @import "./views/my-profile";
 @import "./views/upload.scss";
 @import "./views/watch.scss";
 
-// Defaults
+/*  Defaults */
 
 a {
   color: inherit;
@@ -102,7 +107,7 @@ body {
   }
 }
 
-// toast ui (flash message)
+/* toast ui (flash message) */
 .message {
   position: absolute;
   top: 0.625rem;

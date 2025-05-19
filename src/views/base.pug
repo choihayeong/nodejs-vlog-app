@@ -8,6 +8,7 @@ html(lang="ko")
     title #{pageTitle} | #{siteName}
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css")
     link(rel="stylesheet", href="/statics/css/style.css")
+    //- link(rel="stylesheet", href="/statics/css/output.css")
   body 
     div.wrap#wrap
       if messages.error 
@@ -18,6 +19,8 @@ html(lang="ko")
         +message("success", messages.success)
 
       include partials/header
+
+      div.text-3xl aaa
     
       block content
 
